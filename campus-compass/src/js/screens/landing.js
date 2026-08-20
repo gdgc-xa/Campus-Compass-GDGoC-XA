@@ -1,0 +1,52 @@
+/* ============================================================
+   screens/landing.js — static screen wiring.
+   Attaches: category-tag click → route to browse w/ preselect;
+   search submit → route to browse w/ query.
+   ============================================================ */
+
+import { CATEGORIES, COLOR_OF, SHORT_LABEL } from '../data/categories.js';
+import { attachSearchShell } from '../components/search-shell.js';
+import { navigate } from '../router.js';
+
+/**
+ * Called once during main.js hydration.
+ * The static HTML skeleton is in index.html — we only wire up
+ * dynamic bits (tag cloud + search).
+ */
+export function initLanding(root) {
+  hydrateTagCloud(root);
+  hydrateSearch(root);
+}
+
+function hydrateTagCloud(root) {
+  const container = root.querySelector('[data-tag-cloud]');
+  if (!container) return;
+
+  container.innerHTML = CATEGORIES.map((c, i) => {
+    const stagger = Math.min(i * 30, 300);
+    return `
+      <button class="tag reveal"
+              data-category-id="${c.id}"
+              style="--tag-accent: var(--${c.color}); --reveal-delay: ${stagger}ms;"
+              type="button">
+        ${SHORT_LABEL[c.id]}
+      </button>`;
+  }).join('');
+
+  // Clicking a tag routes to browse with that cluster preselected
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tag');
+    if (!btn) return;
+    const id = btn.dataset.categoryId;
+    navigate({ screen: 'browse', filter: id });
+  });
+}
+
+function hydrateSearch(root) {
+  const shell = root.querySelector('[data-hero-search]');
+  if (!shell) return;
+  attachSearchShell(shell, (query) => {
+    if (!query) return;
+    navigate({ screen: 'browse', q: query });
+  });
+}

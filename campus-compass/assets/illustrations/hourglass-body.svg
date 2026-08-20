@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" role="img" aria-label="Hourglass body">
+  <title>Hourglass body</title>
+  <defs>
+    <linearGradient id="hg-sand-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F4B400" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#B96A1A" stop-opacity="0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Side posts -->
+  <line x1="45" y1="18" x2="45" y2="210" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+  <line x1="175" y1="18" x2="175" y2="210" stroke="#8B5A2B" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Wood top cap -->
+  <rect x="35" y="6" width="150" height="16" rx="3" fill="#8B5A2B" stroke="#5B3F1F" stroke-width="2"/>
+  <ellipse cx="110" cy="6" rx="75" ry="5" fill="#A0703E" stroke="#5B3F1F" stroke-width="1.5"/>
+
+  <!-- Upper glass bulb -->
+  <path d="M50 22 Q50 86 110 113 Q170 86 170 22 Z"
+        fill="#FDF6E4" fill-opacity="0.45" stroke="#5B3F1F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M62 30 Q60 58 70 86" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.6" stroke-linecap="round"/>
+  <path d="M56 28 L164 28 L112 108 L108 108 Z" fill="url(#hg-sand-glow)"/>
+  <path d="M56 28 Q110 38 164 28 L164 30 Q110 40 56 30 Z" fill="#B96A1A" opacity="0.5"/>
+
+  <!-- Falling sand trickle -->
+  <line x1="110" y1="113" x2="110" y2="167" stroke="#E68A2E" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Lower glass bulb -->
+  <path d="M50 197 Q50 126 110 113 Q170 126 170 197 Z"
+        fill="#FDF6E4" fill-opacity="0.45" stroke="#5B3F1F" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M62 189 Q60 156 70 132" fill="none" stroke="#FFFFFF" stroke-width="1.8" opacity="0.5" stroke-linecap="round"/>
+
+  <!-- Sand pile in lower -->
+  <path d="M60 197 Q85 167 110 167 Q135 167 160 197 Z" fill="url(#hg-sand-glow)"/>
+
+  <!-- Wood bottom cap -->
+  <rect x="35" y="191" width="150" height="16" rx="3" fill="#8B5A2B" stroke="#5B3F1F" stroke-width="2"/>
+  <ellipse cx="110" cy="207" rx="75" ry="5" fill="#8B5A2B" stroke="#5B3F1F" stroke-width="1.5"/>
+</svg>

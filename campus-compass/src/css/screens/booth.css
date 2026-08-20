@@ -1,0 +1,140 @@
+/* ============================================================
+   booth.css — booth composition (rendered INSIDE the modal panel).
+   Hero split (body left, visual right), then main+aside grid.
+   ============================================================ */
+
+.booth {
+  padding: var(--space-6) var(--space-6) var(--space-6);
+}
+
+.booth__crumb {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+.booth__crumb-sep { margin: 0 8px; color: var(--border-strong); }
+
+/* ---------- Booth hero ---------- */
+.booth-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  min-height: 420px;
+}
+
+.booth-hero__body {
+  position: relative;
+  padding: var(--space-6) var(--space-6) var(--space-6) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.booth-hero__body::before {
+  content: "";
+  position: absolute;
+  left: var(--space-5);
+  top: var(--space-6);
+  bottom: var(--space-6);
+  width: 4px;
+  border-radius: 2px;
+  background: var(--booth-accent, var(--muted));
+}
+
+.booth-hero__tags {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.booth-hero__title {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -1.2px;
+  line-height: 1.05;
+  margin-top: var(--space-3);
+}
+
+.booth-hero__tagline {
+  font-size: 16px;
+  color: var(--ink-2);
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+.booth-hero__meet {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--ink-2);
+  align-self: flex-start;
+  margin-top: var(--space-3);
+}
+.booth-hero__meet svg { width: 18px; height: 18px; color: var(--sun-deep); flex: 0 0 auto; }
+
+.booth-hero__ctas {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+
+/* ---------- Booth visual (right column) ---------- */
+.booth-hero__visual {
+  position: relative;
+  background: linear-gradient(135deg, var(--ocean-soft) 0%, var(--surface-2) 100%);
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  overflow: hidden;
+}
+.booth-hero__emblem {
+  width: 140px; height: 140px;
+  border-radius: 30px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-serif);
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--booth-accent-ink, var(--ink));
+  letter-spacing: -1.5px;
+  z-index: 2;
+  position: relative;
+}
+.booth-hero__visual .hero-primitives {
+  position: absolute; inset: 0;
+  z-index: 1;
+}
+.booth-hero__visual .hero-primitives__item svg { opacity: 0.85; }
+
+/* ---------- Booth body grid: main + aside ---------- */
+.booth-body {
+  margin-top: var(--space-5);
+}
+
+/* Aside stack */
+.booth-aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .booth { padding: var(--space-4) var(--space-4) var(--space-6); }
+  .booth-hero__title { font-size: 30px; }
+  .booth-hero__body { padding: var(--space-5) var(--space-4) var(--space-5) var(--space-5); }
+  .booth-hero__visual { min-height: 200px; }
+  .booth-hero__emblem { width: 100px; height: 100px; font-size: 32px; }
+}

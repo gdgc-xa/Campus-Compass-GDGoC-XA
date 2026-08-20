@@ -1,0 +1,103 @@
+/* ============================================================
+   hourglass.css — half-buried hourglass in the landing hero.
+   Composition:
+     .hourglass                     — outer wrapper, sways gently
+     .hourglass__body    (SVG img)  — the glass + frame + interior sand.
+                                      Rotates 180° on dblclick (see
+                                      hourglass-flip.js). Rotation axis
+                                      is the neck.
+     .hourglass__mound   (SVG img)  — the buried sand. NEVER rotates —
+                                      the hourglass stays planted in it.
+     .hourglass__grains             — falling sand particles (positioned
+                                      absolutely, so they always fall
+                                      downward in screen space, no matter
+                                      what the body is doing).
+   ============================================================ */
+
+.hourglass {
+  position: absolute;
+  right: 4vw;
+  top: 220px;
+  width: 220px;
+  aspect-ratio: 240 / 280;
+  z-index: 2;
+  transform-origin: 50% 95%;
+  animation: hourglassSway 6s ease-in-out infinite;
+}
+.hourglass[data-flippable] { cursor: pointer; }
+
+/* Both layers occupy the same box and align by shared viewBox */
+.hourglass__body,
+.hourglass__mound {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* --- Body: rotates around the neck on flip ---
+   Neck is at y=113 in the 280-tall viewBox → 40.4% from top.
+   cubic-bezier gives a slight overshoot on the settle so it reads
+   as inertia, not a servo. */
+.hourglass__body {
+  z-index: 2;
+  transform-origin: 50% 40.4%;
+  transform: rotate(var(--flip, 0deg));
+  transition: transform 950ms cubic-bezier(0.34, 1.35, 0.42, 1);
+}
+
+/* --- Mound: static. Never rotates. --- */
+.hourglass__mound {
+  z-index: 1;
+}
+
+/* --- Falling sand grains ---
+   Positioned relative to .hourglass (not the body), so they keep
+   falling straight down regardless of the body's rotation. */
+.hourglass__grains {
+  position: absolute;
+  left: 50%;
+  top: 43%;
+  width: 4px;
+  height: 60px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 320ms ease-out;
+}
+.hourglass__grain {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px; height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--glass-grain);
+  animation: sandFall 1.4s linear infinite;
+  animation-delay: var(--grain-delay, 0s);
+}
+
+/* --- Mobile shrink --- */
+@media (max-width: 820px) {
+  .hourglass {
+    position: relative;
+    right: auto; top: auto;
+    margin: var(--space-4) auto 0;
+    width: 160px;
+    display: block;
+  }
+}
+
+/* --- Reduced motion: no flip affordance, no lantern glow flicker --- */
+@media (prefers-reduced-motion: reduce) {
+  .hourglass[data-flippable] { cursor: default; }
+}
+
+/* --- Dark mode: the sand becomes a lantern glow --- */
+:root[data-theme="dark"] .hourglass {
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--sun) 45%, transparent));
+}

@@ -1,0 +1,64 @@
+/* ============================================================
+   panel.css — generic content panel (about / events / leaders / meta).
+   Rounded surface with an all-caps kicker label at the top.
+   ============================================================ */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+}
+
+.panel + .panel {
+  margin-top: var(--space-5);
+}
+
+.panel__kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+.panel__title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-3);
+}
+
+.panel__body p {
+  font-size: 15px;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+.panel__body p + p { margin-top: var(--space-3); }
+
+/* --- At-a-glance rows (booth aside meta) --- */
+.panel__rows { display: block; }
+.panel__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.panel__row:last-child { border-bottom: 0; }
+.panel__row-label { color: var(--muted); }
+.panel__row-value { color: var(--ink); font-weight: 600; text-align: right; }
+
+/* --- Placeholder state (org data not yet populated from FB) --- */
+.panel--pending {
+  border-style: dashed;
+}
+.panel--pending .panel__body p {
+  color: var(--muted);
+  font-style: italic;
+}

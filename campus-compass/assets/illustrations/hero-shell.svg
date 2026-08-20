@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -40 100 80" role="img" aria-label="Scallop shell">
+  <title>Scallop shell</title>
+  <!-- Main shell body -->
+  <path fill="#F5D0BE" stroke="#3D2817" stroke-width="3" stroke-linejoin="round"
+        d="M -42 24
+           Q -32 -32 0 -32
+           Q 32 -32 42 24
+           Q 32 30 0 30
+           Q -32 30 -42 24 Z"/>
+  <!-- Cel-shade highlight (upper-left) -->
+  <path fill="#FFEDDF" opacity="0.8"
+        d="M -32 12
+           Q -24 -22 0 -22
+           Q -8 -14 -14 0
+           Q -22 12 -32 12 Z"/>
+  <!-- Scallop ridges (radial fan lines) -->
+  <g fill="none" stroke="#B96A1A" stroke-width="2" stroke-linecap="round">
+    <path d="M -20 -10 L -8 22"/>
+    <path d="M -8  -22 L -2 24"/>
+    <path d="M  8  -22 L  2 24"/>
+    <path d="M  20 -10 L  8 22"/>
+    <path d="M -28 4 L -20 24"/>
+    <path d="M  28 4 L  20 24"/>
+  </g>
+  <!-- Hinge dot at top -->
+  <circle cx="0" cy="-30" r="3" fill="#3D2817"/>
+</svg>

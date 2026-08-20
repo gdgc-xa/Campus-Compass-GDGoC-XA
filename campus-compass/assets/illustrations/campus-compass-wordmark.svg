@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 340" role="img" aria-label="Campus Compass wordmark">
+  <title>Campus Compass wordmark</title>
+  <!-- "Campus" — brush script, yellow with black outline -->
+  <text x="240" y="80" text-anchor="middle"
+        font-family="'Brush Script MT','Segoe Script','Snell Roundhand',cursive"
+        font-size="100" font-style="italic" font-weight="800"
+        fill="#F4B400" stroke="#2B1E12" stroke-width="2.8"
+        paint-order="stroke fill">Campus</text>
+
+  <!-- Compass rose (small, between the words) -->
+  <g transform="translate(240, 172)" fill="none" stroke="#B8A576">
+    <circle r="28" stroke-width="2.4"/>
+    <circle r="22" stroke-width="1"/>
+    <g stroke="none" fill="#B8A576">
+      <polygon points="0,-38 4,-7 0,-3 -4,-7"/>
+      <polygon points="38,0 7,4 3,0 7,-4"/>
+      <polygon points="0,38 4,7 0,3 -4,7"/>
+      <polygon points="-38,0 -7,4 -3,0 -7,-4"/>
+    </g>
+    <g stroke="none" fill="#C8B27F">
+      <polygon points="22,-22 5,-5 2.5,-2.5 5,-2.5"/>
+      <polygon points="22,22 5,5 2.5,2.5 2.5,5"/>
+      <polygon points="-22,22 -5,5 -2.5,2.5 -5,2.5"/>
+      <polygon points="-22,-22 -5,-5 -2.5,-2.5 -2.5,-5"/>
+    </g>
+    <g stroke="none" fill="#B8A576">
+      <circle cx="0" cy="-15" r="0.9"/>
+      <circle cx="15" cy="0" r="0.9"/>
+      <circle cx="0" cy="15" r="0.9"/>
+      <circle cx="-15" cy="0" r="0.9"/>
+    </g>
+    <circle r="1.7" fill="#B8A576" stroke="none"/>
+  </g>
+
+  <!-- "Compass" — outlined serif -->
+  <text x="240" y="260" text-anchor="middle"
+        font-family="'Georgia','Iowan Old Style',serif"
+        font-size="66" font-weight="900"
+        fill="none" stroke="#2B1E12" stroke-width="1.9"
+        letter-spacing="-1.5">Compass</text>
+</svg>

@@ -1,0 +1,192 @@
+/* ============================================================
+   animations.css — every @keyframes block for the site.
+   Components bind to these by name in their own CSS.
+   Timings are intentionally slow — ambient motion should read
+   as peripheral, never demand attention.
+   ============================================================ */
+
+/* --- Ambient primitives: puzzle pieces, starfish drift on wind --- */
+@keyframes drift {
+  0%   { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+  50%  { transform: translate(6px, -8px) rotate(calc(var(--rot, 0deg) + 3deg)); }
+  100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+}
+
+@keyframes drift-alt {
+  0%   { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+  50%  { transform: translate(-5px, 6px) rotate(calc(var(--rot, 0deg) - 4deg)); }
+  100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+}
+
+/* --- Ocean layers: two speeds, opposite directions.
+       Wave paths extend ~280px beyond the SVG viewBox so translation
+       never exposes empty space. --- */
+@keyframes waveDriftA {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-140px); }
+}
+@keyframes waveDriftB {
+  from { transform: translateX(-140px); }
+  to   { transform: translateX(0); }
+}
+
+/* --- Foam layer bob (small vertical shimmy) --- */
+@keyframes foamBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* --- Sparkle twinkle on wave crests --- */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1.2); }
+}
+
+/* --- Sailboat gentle rock --- */
+@keyframes sailboatBob {
+  0%, 100% { transform: translate(0, 0) rotate(-1.5deg); }
+  50%      { transform: translate(0, -3px) rotate(1.5deg); }
+}
+
+/* --- Birds on horizon bob --- */
+@keyframes birdBob {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(2px, -2px); }
+}
+
+/* --- Wave motion lines drift horizontally (foreground pass) --- */
+@keyframes waveLineDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-40px); }
+}
+
+/* --- Hourglass: subtle sway on the wooden frame --- */
+@keyframes hourglassSway {
+  0%, 100% { transform: rotate(-0.6deg); }
+  50%      { transform: rotate(0.6deg); }
+}
+
+/* --- Sand grains fall through the neck of the hourglass --- */
+@keyframes sandFall {
+  0%   { transform: translateY(-6px); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateY(48px); opacity: 0; }
+}
+
+/* --- Reveal on scroll: fade + rise --- */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Modal enter --- */
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)     scale(1); }
+}
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* --- Compass rose gentle rotation toward current section
+       Applied via a CSS variable set from JS: --compass-rot. --- */
+@keyframes compassIdle {
+  0%, 100% { transform: rotate(calc(var(--compass-rot, 0deg) - 1.5deg)); }
+  50%      { transform: rotate(calc(var(--compass-rot, 0deg) + 1.5deg)); }
+}
+
+/* --- Palm tree tropical-breeze sway. Rotation origin sits
+       at the base of the trunk (right side of sea scene). --- */
+@keyframes palmSway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+/* ============================================================
+   LANDING HERO SCENE — cel-animation waves + clouds + sand pour
+   ============================================================ */
+
+/* --- Wave parallax: each layer is width:200% and slides
+       0 → -50% linearly, then wraps. Wave path period must
+       divide 50% of the SVG viewBox width evenly so the loop
+       is seamless. --- */
+@keyframes waveScrollLtr {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes waveScrollRtl {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* --- Ocean "breathing" — the whole water group rises + settles.
+       Applied at the ocean group level, composes on top of the
+       per-layer waveScroll. --- */
+@keyframes oceanBreathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* --- Foam highlight blink — stepped, three sets of positions
+       swap frame-by-frame. The steps(1) timing on the animation
+       is what makes this read as illustrated cel animation
+       (Ghibli/Genshin) rather than a physics simulation. --- */
+@keyframes foamBlinkA { 0%, 33.3%  { opacity: 1; } 33.4%, 100% { opacity: 0; } }
+@keyframes foamBlinkB { 0%, 33.3%  { opacity: 0; } 33.4%, 66.6% { opacity: 1; } 66.7%, 100% { opacity: 0; } }
+@keyframes foamBlinkC { 0%, 66.6%  { opacity: 0; } 66.7%, 100% { opacity: 1; } }
+
+/* --- Cloud drift (very slow so sky feels alive, not moving) --- */
+@keyframes cloudDriftA {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-200px); }
+}
+@keyframes cloudDriftB {
+  from { transform: translateX(0); }
+  to   { transform: translateX(200px); }
+}
+
+/* --- Hourglass sand pour (inside the hero hourglass).
+       Upper sand recedes slightly, lower sand builds up. --- */
+@keyframes sandRecede {
+  0%   { transform: scaleY(1); }
+  100% { transform: scaleY(0.94); }
+}
+@keyframes sandBuild {
+  0%   { transform: scaleY(0.94); }
+  100% { transform: scaleY(1); }
+}
+/* Continuous slow stream through the neck */
+@keyframes sandStream {
+  0%   { opacity: 0.9; transform: translateY(-2px); }
+  50%  { opacity: 1;   transform: translateY(2px); }
+  100% { opacity: 0.9; transform: translateY(-2px); }
+}
+
+
+/* --- Tide-line foam drift (footer top-down scene).
+       Foam scallop periods divide 240 evenly, so a 240-unit
+       shift lands the band exactly on itself. --- */
+@keyframes tideDrift  { from { transform: translateX(0); }        to { transform: translateX(-240px); } }
+@keyframes tideDriftR { from { transform: translateX(-240px); }   to { transform: translateX(0); } }
+
+/* --- Underwater caustics: slow bloom, not a blink --- */
+@keyframes causticPulse {
+  0%, 100% { opacity: 0.30; }
+  50%      { opacity: 0.62; }
+}
+
+/* --- Reveal helper class (used by reveal-observer.js) --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity   700ms ease-out var(--reveal-delay, 0ms),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" role="presentation">
+  <defs>
+    <linearGradient id="dune-a" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBE4C8" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#FBE4C8" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <path d="M0,60 C240,10 480,120 720,60 C960,10 1200,90 1440,40 L1440,120 L0,120 Z" fill="url(#dune-a)"/>
+  <path d="M0,80 C220,40 460,110 720,80 C960,55 1180,110 1440,70 L1440,120 L0,120 Z" fill="#EFE0BF"/>
+</svg>
