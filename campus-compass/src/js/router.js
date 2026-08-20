@@ -44,7 +44,7 @@ export function navigate(params = {}) {
   if (merged.q)      q.set('q', merged.q);
   if (merged.org)    q.set('org', merged.org);
 
-  const url = q.toString() ? `?${q.toString()}` : '/';
+  const url = q.toString() ? `?${q.toString()}` : location.pathname;
   history.pushState(null, '', url);
   handleRoute();
 }
