@@ -9,7 +9,6 @@ import { initRouter }        from './router.js';
 import { initThemeToggle }   from './theme-toggle.js';
 import { watchReveals }      from './reveal-observer.js';
 import { initLanding }       from './screens/landing.js';
-import { initTagIntersection } from './tag-intersection.js';
 import { initNavSheet }      from './nav-sheet.js';
 
 function boot() {
@@ -27,9 +26,6 @@ function boot() {
 
   // Mobile nav sheet (hamburger, <=820px)
   initNavSheet();
-
-  // Ambient delights
-  initTagIntersection();
 }
 
 if (document.readyState === 'loading') {

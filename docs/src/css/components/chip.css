@@ -57,10 +57,3 @@
 .chip[aria-pressed="true"] .chip__dot   { display: none; }
 .chip[aria-pressed="true"] .chip__check { display: block; }
 
-/* Hover intersection-preview state (JS: another chip is hovered
-   AND both would combine to a valid intersection with current
-   selection). Set via .chip--preview class from JS. */
-.chip--preview {
-  border-color: var(--sun);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sun) 30%, transparent);
-}
