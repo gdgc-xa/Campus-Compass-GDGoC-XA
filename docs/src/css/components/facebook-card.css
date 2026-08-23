@@ -1,8 +1,8 @@
 /* ============================================================
-   facebook-card.css — mockup Facebook page card (booth aside).
-   Clearly a design mockup — subtle "PREVIEW" chip in the corner,
-   the URL row is a text-only link and never actually navigates.
-   Data is populated by fetchOrgFromFacebook(handle) — stub for now.
+   facebook-card.css — the org's Facebook page as a link card
+   (booth aside). Identity and one working link, nothing imitated:
+   the follower row, the Like/Message buttons, the verified tick
+   and the PREVIEW chip were all decoration and are gone.
    ============================================================ */
 
 .fb-card {
@@ -32,19 +32,6 @@
 .fb-card__cover::after  { right: 5%; top: 25%; width: 80px; height: 60px; opacity: 0.7; }
 
 /* PREVIEW chip — signals this is a design mockup, not a live FB embed */
-.fb-card__preview-chip {
-  position: absolute;
-  top: 10px; right: 10px;
-  padding: 3px 8px;
-  border-radius: var(--radius-pill);
-  background: rgba(0,0,0,0.35);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
 .fb-card__body {
   padding: var(--space-4) var(--space-5) var(--space-5);
   position: relative;
@@ -75,68 +62,12 @@
   color: var(--ink);
   line-height: 1.2;
 }
-.fb-card__verified {
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: #1877F2;
-  display: grid; place-items: center;
-  color: #fff;
-  flex: 0 0 auto;
-}
-.fb-card__verified svg { width: 10px; height: 10px; }
-
 .fb-card__handle {
   font-size: 13px;
   color: var(--muted);
   margin-top: 4px;
 }
 
-.fb-card__stats {
-  display: flex;
-  gap: var(--space-5);
-  margin-top: var(--space-4);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  color: var(--ink-2);
-}
-.fb-card__stat-num {
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.fb-card__actions {
-  display: flex;
-  gap: var(--space-2);
-  margin-top: var(--space-4);
-}
-.fb-card__like,
-.fb-card__msg {
-  flex: 1;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  font-size: 13.5px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: filter 160ms;
-}
-.fb-card__like {
-  background: #1877F2;
-  color: #fff;
-}
-.fb-card__like:hover { filter: brightness(1.08); }
-.fb-card__msg {
-  background: var(--surface-2);
-  color: var(--ink);
-  border: 1px solid var(--border);
-}
-.fb-card__msg:hover { background: var(--surface); }
-
-/* Link row — visibly a link, but does not navigate */
 .fb-card__link {
   display: flex;
   align-items: center;
@@ -163,28 +94,6 @@
 .fb-card__link-arrow { margin-left: auto; color: var(--muted); }
 
 /* Pending — grayed out when FB API hasn't populated */
-.fb-card--pending .fb-card__emblem,
-.fb-card--pending .fb-card__stats,
-.fb-card--pending .fb-card__actions,
-.fb-card--pending .fb-card__link { opacity: 0.55; }
-.fb-card--pending::after {
-  content: "Populated by Facebook page — pending API";
-  position: absolute;
-  bottom: 12px; left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  background: var(--surface);
-  border: 1px dashed var(--border-strong);
-  font-size: 10px;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  pointer-events: none;
-}
-
-
-/* --- Roster logo inside the profile emblem --- */
 .fb-card__emblem img {
   width: 100%; height: 100%;
   object-fit: cover;
