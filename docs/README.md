@@ -47,6 +47,7 @@ campus-compass/
 │   │   ├── components/              # one file, one component. Never reach into a sibling.
 │   │   │   ├── nav.css              # top navigation bar
 │   │   │   ├── nav-sheet.css        # mobile hamburger sheet (<=820px)
+│   │   │   ├── venue-map.css        # org-fair map panel in the booth
 │   │   │   ├── button.css           # .btn base + --primary, --sun, --ghost, --back
 │   │   │   ├── search-shell.css     # search input + submit (hero + compact variants)
 │   │   │   ├── tag.css              # cluster pill (hero, card, booth variants)
@@ -75,6 +76,8 @@ campus-compass/
 │   │   ├── compass-orientation.js   # delight #2 — nav compass points to current screen
 │   │   ├── tag-intersection.js      # delight #4 — chip hover previews intersection
 │   │   ├── nav-sheet.js             # mobile nav sheet open/close + focus
+│   │   ├── components/venue-map.js   # the fair map, one org lit at a time
+│   │   ├── data/venue.js             # the quad, its tents, who stands where
 │   │   │
 │   │   ├── data/
 │   │   │   ├── categories.js        # CATEGORIES[], SHORT_LABEL, FULL_LABEL, COLOR_OF, THEME_OF

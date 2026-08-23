@@ -103,6 +103,13 @@
   50%      { opacity: 0.62; }
 }
 
+/* --- Venue map: the halo around the lit tent breathes so the eye
+       finds it without the square itself moving. --- */
+@keyframes venuePulse {
+  0%, 100% { transform: scale(1);    opacity: 0.50; }
+  50%      { transform: scale(1.09); opacity: 0.18; }
+}
+
 /* --- Reveal helper class (used by reveal-observer.js) --- */
 .reveal {
   opacity: 0;

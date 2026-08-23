@@ -112,6 +112,35 @@
   --scene-cloud:        #FFFFFF;
   --scene-hill:         #4A9088;    /* used at 0.55 opacity */
   --scene-sea-deep:     #2E9BC4;    /* at the horizon (far) */
+  /* --- Venue map: the printed org-fair map's own colour key.
+         These are the colours students see on the paper map, so they
+         are deliberately NOT the four cluster hues. --- */
+  --venue-field:        #E7F5E3;   /* the quad */
+  --venue-field-line:   #9CC49A;
+  --venue-building:     #A89078;   /* Chapel / SBM / Eng / Faber */
+  --venue-building-ink: #FFFFFF;
+  --venue-tent:         #FFFFFF;   /* the three marquee circles */
+  --venue-stage:        #16161A;
+
+  --venue-pin-ink:      #FFFFFF;  /* tent number on the lit square */
+  --venue-pin-halo:     rgba(0,0,0,0.55);
+  --vz-tech:            #16161A;
+  --vz-csg-aeco:        #4B2FD6;
+  --vz-media:           #F02C8C;
+  --vz-engineering:     #8B1A1A;
+  --vz-cas:             #E62020;
+  --vz-aggies:          #63C463;
+  --vz-sbm:             #F5C43C;
+  --vz-nursing:         #AECBF0;
+  --vz-compstud:        #7C8894;
+  --vz-soe:             #12468C;
+  --vz-sports:          #B45CE8;
+  --vz-service:         #D2820E;
+  --vz-faith:           #46D6BE;
+  --vz-socio:           #F8A6A6;
+  --vz-environment:     #1E6B25;
+  --vz-sci-eng-tech:    #8C3E6B;
+
   --scene-sea-mid:      #3FAEBE;
   --scene-sea-shallow:  #B8ECE8;    /* at the shore (near) */
   --scene-water-1:      #7FD8D0;    /* back wave (lightest) */
@@ -255,6 +284,34 @@
   --scene-water-3:      #14344A;   /* front wave, darkest */
   --scene-water-shim:   #9FD8E8;
   --scene-foam:         #B9D2DE;   /* cool foam, not cream */
+  /* --- Venue map at night: the quad reads as a lit field, the
+         zone hues keep their identity but lift for contrast. --- */
+  --venue-field:        #22303A;
+  --venue-field-line:   #3A4E5C;
+  --venue-building:     #4A3F33;
+  --venue-building-ink: #EDE3D4;
+  --venue-tent:         #33424E;
+  --venue-stage:        #0C0C0F;
+
+  --venue-pin-ink:      #FFFFFF;  /* tent number on the lit square */
+  --venue-pin-halo:     rgba(0,0,0,0.55);
+  --vz-tech:            #6E7480;
+  --vz-csg-aeco:        #8A78F0;
+  --vz-media:           #FF6FB0;
+  --vz-engineering:     #D4635F;
+  --vz-cas:             #FF6B5F;
+  --vz-aggies:          #7FD98A;
+  --vz-sbm:             #FBD34E;
+  --vz-nursing:         #B9D6F5;
+  --vz-compstud:        #9BA6B2;
+  --vz-soe:             #5A8FD6;
+  --vz-sports:          #C98BF0;
+  --vz-service:         #E8A63C;
+  --vz-faith:           #6FE3CF;
+  --vz-socio:           #FFB9B9;
+  --vz-environment:     #5FA86A;
+  --vz-sci-eng-tech:    #C07AA0;
+
   --scene-foam-hi:      #E8F4FA;
 
   --scene-sand-wet:     #5E4B33;

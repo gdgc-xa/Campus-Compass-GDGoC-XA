@@ -66,6 +66,7 @@
 .booth-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
+  align-items: start;
   gap: var(--space-5);
   margin-top: var(--space-5);
 }

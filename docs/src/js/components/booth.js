@@ -6,6 +6,7 @@
 
 import { COLOR_OF, FULL_LABEL, SHORT_LABEL } from '../data/categories.js';
 import { fbCardHtml } from './facebook-card.js';
+import { venueMapHtml } from './venue-map.js';
 
 /**
  * boothHtml(org) → HTML for the entire booth interior
@@ -37,6 +38,7 @@ export function boothHtml(org) {
       </nav>
 
       <div class="booth-grid">
+        <div class="booth-main">
         <section class="booth-hero">
           <div class="booth-hero__body">
             <button class="btn btn--back" type="button" data-nav="browse">
@@ -91,6 +93,9 @@ export function boothHtml(org) {
             </div>
           </div>
         </section>
+
+          ${venueMapHtml(org)}
+        </div>
 
         <div class="booth-aside">
           ${fbCardHtml(org)}
