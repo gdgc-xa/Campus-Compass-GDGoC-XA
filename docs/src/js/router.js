@@ -44,6 +44,8 @@ export function navigate(params = {}) {
   if (merged.q)      q.set('q', merged.q);
   if (merged.org)    q.set('org', merged.org);
 
+  // location.pathname, not '/': the site is served from a subpath on
+  // GitHub Pages, and a bare '/' would navigate off it to the domain root.
   const url = q.toString() ? `?${q.toString()}` : location.pathname;
   history.pushState(null, '', url);
   handleRoute();

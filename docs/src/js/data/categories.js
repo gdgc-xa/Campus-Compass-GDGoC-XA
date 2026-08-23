@@ -19,6 +19,7 @@ export const CATEGORIES = [
   { id: 'socio-cultural',  full: 'Socio-Cultural',                                     short: 'Socio-Cultural',   color: 'yellow' },
   { id: 'service-learning',full: 'Service-Learning',                                   short: 'Service-Learning', color: 'red'    },
   { id: 'program-based',   full: 'Program-Based',                                      short: 'Program-Based',    color: 'blue'   },
+  { id: 'religious',       full: 'Religious',                                          short: 'Religious',        color: 'yellow' },
 ];
 
 /**
@@ -37,7 +38,7 @@ export const COLOR_OF    = Object.fromEntries(CATEGORIES.map(c => [c.id, c.color
 export const THEME_OF = {
   blue:   { name: 'Mind',    clusters: ['Governance', 'Sci · Eng · Tech', 'Program-Based'] },
   green:  { name: 'Ground',  clusters: ['Business', 'Sports', 'Environment']              },
-  yellow: { name: 'Culture', clusters: ['Food & Agri', 'Socio-Cultural']                  },
+  yellow: { name: 'Culture', clusters: ['Food & Agri', 'Socio-Cultural', 'Religious']     },
   red:    { name: 'Voice',   clusters: ['Media & Arts', 'Service-Learning']               },
 };
 

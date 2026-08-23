@@ -5,6 +5,10 @@
 
 Static HTML / CSS / vanilla JS. No frameworks, no build step, no npm dependencies.
 
+> **Picking this up after a break?** Read [HANDOFF.md](HANDOFF.md) first —
+> it covers the session history, the two scene geometries, a known regression,
+> and the gotchas that will otherwise cost you an hour each.
+
 ---
 
 ## Run it
@@ -42,6 +46,7 @@ campus-compass/
 │   │   │
 │   │   ├── components/              # one file, one component. Never reach into a sibling.
 │   │   │   ├── nav.css              # top navigation bar
+│   │   │   ├── nav-sheet.css        # mobile hamburger sheet (<=820px)
 │   │   │   ├── button.css           # .btn base + --primary, --sun, --ghost, --back
 │   │   │   ├── search-shell.css     # search input + submit (hero + compact variants)
 │   │   │   ├── tag.css              # cluster pill (hero, card, booth variants)
@@ -52,7 +57,6 @@ campus-compass/
 │   │   │   ├── leader.css           # leader tile
 │   │   │   ├── event.css            # event row with date tile
 │   │   │   ├── theme-block.css      # 4-color legend explainer
-│   │   │   ├── hourglass.css        # positioning + sway + grain-fall bindings
 │   │   │   ├── sea-scene.css        # ocean layer / foam / lines / sparkles / boats / birds bindings
 │   │   │   ├── footer.css           # sand footer + GDG credit + footprints delight
 │   │   │   ├── filter-note.css      # intersection callout
@@ -71,9 +75,8 @@ campus-compass/
 │   │   │
 │   │   ├── footprints.js            # delight #1 — footprints in the sand footer
 │   │   ├── compass-orientation.js   # delight #2 — nav compass points to current screen
-│   │   ├── hourglass-scroll.js      # delight #3 — sand grains speed up while scrolling
 │   │   ├── tag-intersection.js      # delight #4 — chip hover previews intersection
-│   │   ├── hourglass-flip.js        # delight #5 — double-click hourglass to flip it 180°
+│   │   ├── nav-sheet.js             # mobile nav sheet open/close + focus
 │   │   │
 │   │   ├── data/
 │   │   │   ├── categories.js        # CATEGORIES[], SHORT_LABEL, FULL_LABEL, COLOR_OF, THEME_OF
@@ -96,12 +99,9 @@ campus-compass/
 │
 └── assets/
     ├── illustrations/               # redrawn cleaner than the mockups (per project decision)
-    │   ├── campus-compass-wordmark.svg
     │   ├── compass-rose.svg
-    │   ├── hourglass.svg
     │   ├── sea-scene.svg            # (also inlined in index.html so CSS binds to layers)
     │   ├── gdg-credit.svg           # sun mark
-    │   ├── dune-divider.svg
     │   └── primitives/
     │       ├── puzzle-red.svg
     │       ├── puzzle-blue.svg
@@ -120,11 +120,21 @@ campus-compass/
 
 ## Where things live
 
-### Categories (the 10 clusters)
+### Categories (11 clusters)
 `src/js/data/categories.js` — one edit updates everywhere: chip row, tag cloud, card tags, booth tags, legend copy.
 
-### Orgs (the 15)
-`src/js/data/organizations.js` — pure data. GDG has full content from the mockup; the other 14 are `pending: true` and will populate from Facebook via `fetchOrgFromFacebook(handle)` (currently a stub).
+### Orgs (69)
+`src/js/data/organizations.js` — pure data, generated from the official roster PDF
+("Link + Name and Description + Org Head"), so names, e-mails and Facebook handles
+match the source exactly.
+
+* **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
+* **67 have logos**, lifted from the same PDF and re-encoded to 320px WebP in
+  `assets/orgs/`. Only IIEE and XU-XCEED were listed with
+  an e-mail only, so they render their initials instead.
+* Every entry carries `pending: true` — the long-form copy (description, meeting
+  time, officers, events) is not in the roster. `fetchOrgFromFacebook(handle)` is
+  the slot for it.
 
 ### The three screens
 - Landing: static HTML in `index.html` under `#screen-landing`; tag-cloud hydration in `src/js/screens/landing.js`.
@@ -167,12 +177,9 @@ Every reusable illustration group in the mockup SVGs is exported to `assets/illu
 
 | Mockup group | File |
 |---|---|
-| `#Campus-Compass-Logo` | `campus-compass-wordmark.svg` |
 | `#Compass-Icon` | `compass-rose.svg` (inlined in nav for `currentColor`) |
-| `#Hourglass` | `hourglass.svg` (composed reference) + split into `hourglass-body.svg` (rotates on flip) and `hourglass-mound.svg` (stays buried) |
 | `#Sea-Scene` | `sea-scene.svg` (also inlined in `index.html` so CSS animation classes bind to internal `<g>` groups) |
 | `#GDG-Credit` (sun mark) | `gdg-credit.svg` |
-| Dune divider | `dune-divider.svg` |
 | 4 puzzle pieces + starfish | `primitives/*.svg` |
 
 Small mockup-only decorations that were not extracted separately (they exist inside `sea-scene.svg` as internal groups instead): the two sailboats, the three horizon birds, the sparkles, and the wave motion lines. If you need to swap them individually, edit `sea-scene.svg` and the inline copy in `index.html`.

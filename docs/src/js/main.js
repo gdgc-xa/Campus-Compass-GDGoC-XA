@@ -9,9 +9,8 @@ import { initRouter }        from './router.js';
 import { initThemeToggle }   from './theme-toggle.js';
 import { watchReveals }      from './reveal-observer.js';
 import { initLanding }       from './screens/landing.js';
-import { initHourglassScroll } from './hourglass-scroll.js';
-import { initHourglassFlip }   from './hourglass-flip.js';
 import { initTagIntersection } from './tag-intersection.js';
+import { initNavSheet }      from './nav-sheet.js';
 
 function boot() {
   initThemeToggle();
@@ -26,9 +25,10 @@ function boot() {
   // Reveal observer — landing + any static sections in view
   watchReveals(document);
 
+  // Mobile nav sheet (hamburger, <=820px)
+  initNavSheet();
+
   // Ambient delights
-  initHourglassScroll();
-  initHourglassFlip();
   initTagIntersection();
 }
 

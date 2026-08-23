@@ -79,11 +79,19 @@ function intersect(orgs, activeIds) {
 function search(orgs, query) {
   if (!query) return orgs;
   const q = query.toLowerCase();
-  return orgs.filter(org =>
-    org.name.toLowerCase().includes(q)
-    || org.tagline.toLowerCase().includes(q)
-    || org.tags.some(t => SHORT_LABEL[t].toLowerCase().includes(q))
-  );
+  // Every field is optional: the roster gives some orgs only a name
+  // and an e-mail, so guard each one rather than assuming a tagline.
+  return orgs.filter(org => {
+    const hay = [
+      org.name,
+      org.short,
+      org.tagline,
+      org.fbHandle,
+      ...(org.emails || []),
+      ...org.tags.map(t => SHORT_LABEL[t] || t),
+    ];
+    return hay.some(v => v && String(v).toLowerCase().includes(q));
+  });
 }
 
 // ---------- Render ----------

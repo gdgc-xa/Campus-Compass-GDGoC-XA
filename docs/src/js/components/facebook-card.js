@@ -16,6 +16,25 @@ export function fbCardHtml(org) {
   const stats = org.fbStats || { followers: '—', likes: '—' };
   const isPending = !!org.pending;
 
+  // Part of the roster has no Facebook page at all — show the contact
+  // card instead of an empty page mockup.
+  if (!org.fbHandle) {
+    const mails = (org.emails || []).map(e =>
+      `<a class="fb-card__mail" href="mailto:${escapeHtml(e)}">${escapeHtml(e)}</a>`).join('');
+    return `
+      <aside class="fb-card fb-card--nopage">
+        <div class="fb-card__body">
+          <div class="fb-card__emblem"
+               style="background: var(--${color}-soft); color: var(--${color}-ink);">
+            ${org.logo ? `<img src="${escapeHtml(org.logo)}" alt=""/>` : escapeHtml(org.short)}
+          </div>
+          <div class="fb-card__name">${escapeHtml(org.name)}</div>
+          <div class="fb-card__handle">No Facebook page in the roster</div>
+          <div class="fb-card__mails">${mails || '<span class="fb-card__handle">No contact listed</span>'}</div>
+        </div>
+      </aside>`;
+  }
+
   return `
     <aside class="fb-card ${isPending ? 'fb-card--pending' : ''}"
            aria-labelledby="fb-card-name-${org.id}">
@@ -25,7 +44,7 @@ export function fbCardHtml(org) {
       <div class="fb-card__body">
         <div class="fb-card__emblem"
              style="background: var(--${color}-soft); color: var(--${color}-ink);">
-          ${escapeHtml(org.short)}
+          ${org.logo ? `<img src="${escapeHtml(org.logo)}" alt=""/>` : escapeHtml(org.short)}
         </div>
 
         <div id="fb-card-name-${org.id}" class="fb-card__name">
@@ -54,11 +73,11 @@ export function fbCardHtml(org) {
         </div>
       </div>
 
-      <div class="fb-card__link">
+      <a class="fb-card__link" href="${escapeHtml(org.fbUrl)}" target="_blank" rel="noopener noreferrer">
         <span class="fb-card__link-mark">f</span>
         facebook.com/${escapeHtml(org.fbHandle)}
         <span class="fb-card__link-arrow" aria-hidden="true">↗</span>
-      </div>
+      </a>
     </aside>
   `;
 }

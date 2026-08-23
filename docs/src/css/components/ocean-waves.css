@@ -14,10 +14,16 @@
    the 2400-unit viewBox evenly (400 / 300 / 200 / 240), so the
    shape at x and x+1200 is identical and the seam is invisible.
 
-   The cel-animation detail: foam highlight ellipses on the front
-   crests swap between three position sets on steps(1) timing —
-   frame-by-frame, not tweened. That stepped quality is what
-   makes water read as illustrated rather than simulated.
+   Foam glints sit on the front crests (x = 50 + 200k, which is
+   that layer's crest period). Each one swells, lifts and fades
+   out in place on its own staggered cycle — none of them ever
+   moves horizontally.
+
+   Stagger must repeat every 1200 units: the layer is 200% wide
+   and slides translateX(0 → -50%), so a glint at x and the one
+   at x+1200 are the same glint either side of the loop seam and
+   have to share both their size and their delay, or the seam
+   becomes visible.
    ============================================================ */
 
 .wave {
@@ -40,15 +46,19 @@
 .wave--front     { animation: waveScrollLtr  9s linear infinite; }
 .wave--foam-edge { animation: waveScrollRtl 11s linear infinite; }
 
-/* --- Stepped foam-highlight blink (the cel-animation detail) --- */
-.foam-blink { will-change: opacity; }
-.foam-blink--a { animation: foamBlinkA 1.5s steps(1, end) infinite; }
-.foam-blink--b { animation: foamBlinkB 1.5s steps(1, end) infinite; }
-.foam-blink--c { animation: foamBlinkC 1.5s steps(1, end) infinite; }
+/* --- Foam glints on the front crests --- */
+.foam-glint {
+  /* fill-box so scale() pivots on the ellipse itself; the default
+     SVG origin is the user-space corner and would slide it. */
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  opacity: 0;
+  animation: foamGlint 3.4s ease-in-out infinite;
+  animation-delay: var(--glint-delay, 0s);
+  will-change: opacity, transform;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .wave, .foam-blink { animation: none !important; }
-  .foam-blink--a { opacity: 1; }
-  .foam-blink--b,
-  .foam-blink--c { opacity: 0; }
+  .wave { animation: none !important; }
+  .foam-glint { animation: none !important; opacity: 0.7; }
 }

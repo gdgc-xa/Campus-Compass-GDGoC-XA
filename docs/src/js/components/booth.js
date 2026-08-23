@@ -49,7 +49,7 @@ export function boothHtml(org) {
           <div class="booth-hero__tags">${tags}</div>
 
           <h1 class="booth-hero__title">${escapeHtml(org.name)}</h1>
-          <p class="booth-hero__tagline">${escapeHtml(org.tagline)}</p>
+          ${org.tagline ? `<p class="booth-hero__tagline">${escapeHtml(org.tagline)}</p>` : ''}
 
           ${org.meets ? `
             <div class="booth-hero__meet">
@@ -63,18 +63,20 @@ export function boothHtml(org) {
           ` : ''}
 
           <div class="booth-hero__ctas">
-            <button class="btn btn--primary" type="button">
-              Join this org
-              <svg class="btn__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-              </svg>
-            </button>
-            <button class="btn btn--ghost" type="button">
-              Save to my list
-              <svg class="btn__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 2 h10 v13 l-5 -4 l-5 4 z"/>
-              </svg>
-            </button>
+            ${org.fbUrl ? `
+              <a class="btn btn--primary" href="${escapeHtml(org.fbUrl)}" target="_blank" rel="noopener noreferrer">
+                Visit Facebook page
+                <svg class="btn__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 3 H3 v10 h10 V10"/><polyline points="10,2 14,2 14,6"/><line x1="14" y1="2" x2="7" y2="9"/>
+                </svg>
+              </a>` : ''}
+            ${(org.emails && org.emails[0]) ? `
+              <a class="btn btn--ghost" href="mailto:${escapeHtml(org.emails[0])}">
+                Email the org
+                <svg class="btn__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="1" y="3" width="14" height="10" rx="2"/><polyline points="1,4 8,9 15,4"/>
+                </svg>
+              </a>` : ''}
           </div>
         </div>
 
@@ -87,7 +89,9 @@ export function boothHtml(org) {
           </div>
           <div class="booth-hero__emblem"
                style="--booth-accent-ink: var(--${primaryColor}-ink); color: var(--${primaryColor}-ink); background: var(--${primaryColor}-soft);">
-            ${escapeHtml(org.short)}
+            ${org.logo
+              ? `<img class="booth-hero__logo" src="${escapeHtml(org.logo)}" alt=""/>`
+              : escapeHtml(org.short)}
           </div>
         </div>
       </section>
@@ -186,15 +190,25 @@ function leadersPanel(org) {
 }
 
 function metaPanel(org) {
-  const cats = org.tags.map(t => SHORT_LABEL[t]).join(' · ');
+  const cats = org.tags.map(t => SHORT_LABEL[t] || t).join(' · ');
+  const emailRows = (org.emails || []).map(e => `
+    <div class="panel__row">
+      <span class="panel__row-label">Email</span>
+      <a class="panel__row-value panel__row-value--link" href="mailto:${escapeHtml(e)}">${escapeHtml(e)}</a>
+    </div>`).join('');
   return `
     <section class="panel">
-      <div class="panel__kicker">At a glance</div>
+      <div class="panel__kicker">Contact</div>
       <div class="panel__rows">
-        <div class="panel__row"><span class="panel__row-label">Categories</span><span class="panel__row-value">${escapeHtml(cats)}</span></div>
-        <div class="panel__row"><span class="panel__row-label">Founded</span><span class="panel__row-value">${org.founded ?? '—'}</span></div>
+        <div class="panel__row"><span class="panel__row-label">Cluster</span><span class="panel__row-value">${escapeHtml(cats)}</span></div>
+        ${emailRows}
+        <div class="panel__row">
+          <span class="panel__row-label">Facebook</span>
+          ${org.fbUrl
+            ? `<a class="panel__row-value panel__row-value--link" href="${escapeHtml(org.fbUrl)}" target="_blank" rel="noopener noreferrer">${org.fbHandle ? '@' + escapeHtml(org.fbHandle) : 'Facebook page'}</a>`
+            : `<span class="panel__row-value panel__row-value--none">Not listed</span>`}
+        </div>
         <div class="panel__row"><span class="panel__row-label">Open to</span><span class="panel__row-value">${escapeHtml(org.openTo || 'All Xavier Ateneo students')}</span></div>
-        <div class="panel__row"><span class="panel__row-label">Dues</span><span class="panel__row-value">${escapeHtml(org.dues || 'See Facebook page')}</span></div>
       </div>
     </section>`;
 }

@@ -44,16 +44,36 @@
 }
 
 .card__emblem {
-  width: 46px; height: 46px;
+  width: 52px; height: 52px;
   border-radius: 12px;
   background: var(--card-accent-soft, var(--surface-2));
   border: 1px solid color-mix(in srgb, var(--card-accent, var(--border)) 25%, transparent);
   display: grid; place-items: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+/* Roster logo, when the source document had one */
+.card__logo {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Fallback for orgs listed without a logo */
+.card__initials {
   font-family: var(--font-serif);
   font-size: 14px;
   font-weight: 700;
+  letter-spacing: -0.3px;
   color: var(--card-accent-ink, var(--ink));
-  flex: 0 0 auto;
+}
+.card__headtext { min-width: 0; }
+.card__short {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
 }
 
 .card__title {
@@ -61,14 +81,26 @@
   font-size: 15px;
   font-weight: 700;
   color: var(--ink);
-  line-height: 1.2;
-  margin-bottom: var(--space-2);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card__tags {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+}
+
+/* Contact-address fallback line reads as data, not prose */
+.card__desc--contact {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--muted);
+  word-break: break-all;
+  -webkit-line-clamp: 2;
 }
 
 .card__body {
@@ -94,7 +126,17 @@
   font-size: 12px;
   color: var(--muted);
 }
-.card__meta { display: inline-flex; align-items: center; gap: 6px; }
+.card__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card__meta svg { flex: 0 0 auto; color: #1877F2; }
+.card__meta--muted { color: var(--muted); font-style: italic; }
 .card__cta {
   display: inline-flex;
   align-items: center;

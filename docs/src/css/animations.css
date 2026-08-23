@@ -5,73 +5,10 @@
    as peripheral, never demand attention.
    ============================================================ */
 
-/* --- Ambient primitives: puzzle pieces, starfish drift on wind --- */
-@keyframes drift {
-  0%   { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-  50%  { transform: translate(6px, -8px) rotate(calc(var(--rot, 0deg) + 3deg)); }
-  100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-}
-
-@keyframes drift-alt {
-  0%   { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-  50%  { transform: translate(-5px, 6px) rotate(calc(var(--rot, 0deg) - 4deg)); }
-  100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
-}
-
-/* --- Ocean layers: two speeds, opposite directions.
-       Wave paths extend ~280px beyond the SVG viewBox so translation
-       never exposes empty space. --- */
-@keyframes waveDriftA {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-140px); }
-}
-@keyframes waveDriftB {
-  from { transform: translateX(-140px); }
-  to   { transform: translateX(0); }
-}
-
-/* --- Foam layer bob (small vertical shimmy) --- */
-@keyframes foamBob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-3px); }
-}
-
 /* --- Sparkle twinkle on wave crests --- */
 @keyframes twinkle {
   0%, 100% { opacity: 0.35; transform: scale(0.8); }
   50%      { opacity: 1;    transform: scale(1.2); }
-}
-
-/* --- Sailboat gentle rock --- */
-@keyframes sailboatBob {
-  0%, 100% { transform: translate(0, 0) rotate(-1.5deg); }
-  50%      { transform: translate(0, -3px) rotate(1.5deg); }
-}
-
-/* --- Birds on horizon bob --- */
-@keyframes birdBob {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(2px, -2px); }
-}
-
-/* --- Wave motion lines drift horizontally (foreground pass) --- */
-@keyframes waveLineDrift {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-40px); }
-}
-
-/* --- Hourglass: subtle sway on the wooden frame --- */
-@keyframes hourglassSway {
-  0%, 100% { transform: rotate(-0.6deg); }
-  50%      { transform: rotate(0.6deg); }
-}
-
-/* --- Sand grains fall through the neck of the hourglass --- */
-@keyframes sandFall {
-  0%   { transform: translateY(-6px); opacity: 0; }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { transform: translateY(48px); opacity: 0; }
 }
 
 /* --- Reveal on scroll: fade + rise --- */
@@ -129,13 +66,19 @@
   50%      { transform: translateY(-3px); }
 }
 
-/* --- Foam highlight blink — stepped, three sets of positions
-       swap frame-by-frame. The steps(1) timing on the animation
-       is what makes this read as illustrated cel animation
-       (Ghibli/Genshin) rather than a physics simulation. --- */
-@keyframes foamBlinkA { 0%, 33.3%  { opacity: 1; } 33.4%, 100% { opacity: 0; } }
-@keyframes foamBlinkB { 0%, 33.3%  { opacity: 0; } 33.4%, 66.6% { opacity: 1; } 66.7%, 100% { opacity: 0; } }
-@keyframes foamBlinkC { 0%, 66.6%  { opacity: 0; } 66.7%, 100% { opacity: 1; } }
+/* --- Foam glint on a wave crest: swells up, lifts, and fades
+       out where it sits. Each highlight owns its own cycle via a
+       stagger, so nothing ever changes position — the previous
+       version swapped three fixed position sets on steps(1) and
+       read as one bubble teleporting ~200 units sideways.
+       Translate is in viewBox units, not px, since these live in
+       an SVG with preserveAspectRatio="none". --- */
+@keyframes foamGlint {
+  0%,  100% { opacity: 0;    transform: translateY(1px)    scale(0.78); }
+  18%       { opacity: 0.85; transform: translateY(0)       scale(1); }
+  55%       { opacity: 0.7;  transform: translateY(-1.5px)  scale(1.05); }
+  82%       { opacity: 0;    transform: translateY(-3.5px)  scale(0.94); }
+}
 
 /* --- Cloud drift (very slow so sky feels alive, not moving) --- */
 @keyframes cloudDriftA {
@@ -145,23 +88,6 @@
 @keyframes cloudDriftB {
   from { transform: translateX(0); }
   to   { transform: translateX(200px); }
-}
-
-/* --- Hourglass sand pour (inside the hero hourglass).
-       Upper sand recedes slightly, lower sand builds up. --- */
-@keyframes sandRecede {
-  0%   { transform: scaleY(1); }
-  100% { transform: scaleY(0.94); }
-}
-@keyframes sandBuild {
-  0%   { transform: scaleY(0.94); }
-  100% { transform: scaleY(1); }
-}
-/* Continuous slow stream through the neck */
-@keyframes sandStream {
-  0%   { opacity: 0.9; transform: translateY(-2px); }
-  50%  { opacity: 1;   transform: translateY(2px); }
-  100% { opacity: 0.9; transform: translateY(-2px); }
 }
 
 
