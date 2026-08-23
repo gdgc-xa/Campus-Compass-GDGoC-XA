@@ -3,6 +3,7 @@
    URL shapes we understand:
      /              → landing
      ?screen=browse → browse
+     ?screen=about  → about
      ?screen=browse&filter=<id>&q=<query> → browse w/ preselect
      ?…&org=<id>    → open booth modal for that org
    pushState is used for user-initiated navigations; the modal
@@ -12,11 +13,13 @@
 import { renderBooth } from './screens/booth.js';
 import { initBrowse } from './screens/browse.js';
 import { initLanding } from './screens/landing.js';
+import { initAbout } from './screens/about.js';
 import { setCompassTarget } from './compass-orientation.js';
 
 const routes = {
   landing: () => showScreen('screen-landing'),
   browse:  () => showScreen('screen-browse'),
+  about:   () => showScreen('screen-about'),
 };
 
 export function currentQuery() {
@@ -74,6 +77,12 @@ export function handleRoute() {
 
   // Modal state follows ?org=…
   renderBooth(org || null);
+
+  // About hydrates once; its own guard makes repeat calls free.
+  if (screen === 'about') {
+    const el = document.getElementById('screen-about');
+    if (el) initAbout(el);
+  }
 
   // Re-init the browse screen only when we JUST landed on it
   if (screen === 'browse' && lastScreen !== 'browse') {

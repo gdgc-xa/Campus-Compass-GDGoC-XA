@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="src/css/screens/landing.css"/>
   <link rel="stylesheet" href="src/css/screens/browse.css"/>
   <link rel="stylesheet" href="src/css/screens/booth.css"/>
+  <link rel="stylesheet" href="src/css/screens/about.css"/>
 
   <link rel="stylesheet" href="src/css/animations.css"/>
 </head>
@@ -81,6 +82,7 @@
       <nav class="nav-links" aria-label="Main">
         <button class="nav-links__item" data-nav="landing" data-nav-item="landing">Discover</button>
         <button class="nav-links__item" data-nav="browse"  data-nav-item="browse">Browse Organizations</button>
+        <button class="nav-links__item" data-nav="about"   data-nav-item="about">About</button>
       </nav>
 
       <div class="nav-actions">
@@ -111,6 +113,7 @@
     <nav class="nav-sheet__links" aria-label="Mobile">
       <button class="nav-sheet__item" data-nav="landing" data-nav-item="landing">Discover</button>
       <button class="nav-sheet__item" data-nav="browse"  data-nav-item="browse">Browse Organizations</button>
+      <button class="nav-sheet__item" data-nav="about"   data-nav-item="about">About</button>
     </nav>
     <div class="nav-sheet__foot">
       <span class="nav-sheet__label">Appearance</span>
@@ -474,6 +477,64 @@
       <section class="browse-grid card-grid" data-card-grid></section>
 
       <p class="grid-footnote" data-grid-footnote hidden></p>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       ABOUT — what this is, who made it. Team tiles are rendered
+       by screens/about.js from data/team.js.
+       ============================================================ -->
+  <main id="screen-about" class="screen screen--about" hidden data-screen="about">
+    <div class="ground-wash" aria-hidden="true"></div>
+
+    <div class="wrap">
+      <header class="about-head">
+        <p class="about-head__kicker">About</p>
+        <h1 class="about-head__title">A directory for the whole org fair.</h1>
+        <p class="about-head__lede">
+          Campus Compass gathers every accredited student organization at Xavier
+          University &ndash; Ateneo de Cagayan into one page you can search, filter
+          and carry in your pocket on the day.
+        </p>
+      </header>
+
+      <section class="about-grid">
+        <article class="about-card">
+          <h2 class="about-card__title">What you can do here</h2>
+          <ul class="about-list">
+            <li><strong>Browse all 69 organizations</strong> across the eleven Xavier Ateneo clusters, one cluster at a time.</li>
+            <li><strong>Search by interest</strong> &mdash; type <em>coders</em>, <em>farm</em>, <em>music</em> or <em>volunteer</em> and get the orgs that actually match.</li>
+            <li><strong>Open any org</strong> for what they do, how to reach them, and their Facebook page.</li>
+            <li><strong>Find their tent</strong> on the fair map, with the spot lit and a landmark to walk toward.</li>
+          </ul>
+        </article>
+
+        <article class="about-card about-card--gdg">
+          <div class="about-gdg">
+            <img class="about-gdg__mark" src="assets/illustrations/gdg-credit.svg" alt="" aria-hidden="true"/>
+            <div>
+              <h2 class="about-card__title">Built by GDG on Campus</h2>
+              <p class="about-gdg__org">Google Developer Groups on Campus &mdash; Xavier Ateneo</p>
+            </div>
+          </div>
+          <p class="about-card__body">
+            Campus Compass was made for <strong>Sands of Time</strong>, the General
+            Assembly Organizational Trip, by the GDG on Campus student developer
+            community at Xavier Ateneo.
+          </p>
+          <a class="btn btn--primary" href="https://www.facebook.com/gdgcxavier" target="_blank" rel="noopener noreferrer">
+            Visit our Facebook page
+            <svg class="btn__icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 3 H3 v10 h10 V10"/><polyline points="10,2 14,2 14,6"/><line x1="14" y1="2" x2="7" y2="9"/>
+            </svg>
+          </a>
+        </article>
+      </section>
+
+      <section class="about-team">
+        <h2 class="about-team__title">People behind the project</h2>
+        <div class="team-grid" data-team-grid></div>
+      </section>
     </div>
   </main>
 
