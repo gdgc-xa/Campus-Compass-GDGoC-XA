@@ -53,7 +53,9 @@ export function boothHtml(org) {
               <div class="booth-hero__headtext">
                 <div class="booth-hero__tags">${tags}</div>
                 <h1 class="booth-hero__title">${escapeHtml(org.name)}</h1>
-                ${org.tagline ? `<p class="booth-hero__tagline">${escapeHtml(org.tagline)}</p>` : ''}
+                ${(org.description || org.tagline)
+                  ? `<p class="booth-hero__tagline">${escapeHtml(org.description || org.tagline)}</p>`
+                  : ''}
                 ${org.meets ? `
                   <div class="booth-hero__meet">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -127,7 +129,6 @@ function metaPanel(org) {
             ? `<a class="panel__row-value panel__row-value--link" href="${escapeHtml(org.fbUrl)}" target="_blank" rel="noopener noreferrer">${org.fbHandle ? '@' + escapeHtml(org.fbHandle) : 'Facebook page'}</a>`
             : `<span class="panel__row-value panel__row-value--none">Not listed</span>`}
         </div>
-        <div class="panel__row"><span class="panel__row-label">Open to</span><span class="panel__row-value">${escapeHtml(org.openTo || 'All Xavier Ateneo students')}</span></div>
       </div>
     </section>`;
 }

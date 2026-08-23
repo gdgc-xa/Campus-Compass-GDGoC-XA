@@ -35,9 +35,11 @@ export function cardHtml(org, i = 0) {
     ? `<img class="card__logo" src="${escapeAttr(org.logo)}" alt="" loading="lazy" decoding="async"/>`
     : `<span class="card__initials">${escapeHtml(initialsOf(org))}</span>`;
 
-  // No taglines in the roster yet — lead with the contact address.
-  const body = org.tagline
-    ? `<p class="card__desc">${escapeHtml(org.tagline)}</p>`
+  // Lead with the org's own blurb; fall back to the contact address
+  // for anything the roster document has not described yet.
+  const blurb = org.description || org.tagline;
+  const body = blurb
+    ? `<p class="card__desc">${escapeHtml(blurb)}</p>`
     : `<p class="card__desc card__desc--contact">${escapeHtml(org.emails?.[0] || 'Contact details to follow')}</p>`;
 
   // Two pages are numeric profile.php URLs with no vanity handle —
