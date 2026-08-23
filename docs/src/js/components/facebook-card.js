@@ -16,9 +16,10 @@ export function fbCardHtml(org) {
   const stats = org.fbStats || { followers: '—', likes: '—' };
   const isPending = !!org.pending;
 
-  // Part of the roster has no Facebook page at all — show the contact
-  // card instead of an empty page mockup.
-  if (!org.fbHandle) {
+  // Gate on the URL, not the handle. Some pages are numeric
+  // profile.php links with no vanity name — they still HAVE a page,
+  // and keying this on fbHandle told OSAS's visitors it had none.
+  if (!org.fbUrl) {
     const mails = (org.emails || []).map(e =>
       `<a class="fb-card__mail" href="mailto:${escapeHtml(e)}">${escapeHtml(e)}</a>`).join('');
     return `
@@ -55,7 +56,7 @@ export function fbCardHtml(org) {
             </svg>
           </span>
         </div>
-        <div class="fb-card__handle">@${escapeHtml(org.fbHandle)} · Community</div>
+        <div class="fb-card__handle">${org.fbHandle ? '@' + escapeHtml(org.fbHandle) + ' · ' : ''}Community</div>
 
         <div class="fb-card__stats">
           <span><span class="fb-card__stat-num">${stats.followers}</span> followers</span>
@@ -75,7 +76,7 @@ export function fbCardHtml(org) {
 
       <a class="fb-card__link" href="${escapeHtml(org.fbUrl)}" target="_blank" rel="noopener noreferrer">
         <span class="fb-card__link-mark">f</span>
-        facebook.com/${escapeHtml(org.fbHandle)}
+        ${org.fbHandle ? 'facebook.com/' + escapeHtml(org.fbHandle) : 'View page on Facebook'}
         <span class="fb-card__link-arrow" aria-hidden="true">↗</span>
       </a>
     </aside>

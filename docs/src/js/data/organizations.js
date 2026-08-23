@@ -6,7 +6,7 @@
    parsed straight from the document so the spelling, e-mail
    addresses and Facebook handles match it exactly.
 
-   68 organizations across 11 clusters. Logos were lifted from
+   69 organizations across 11 clusters. Logos were lifted from
    the same PDF and re-encoded to 320px WebP; orgs the roster
    listed without a logo carry `logo: null` and fall back to
    their initials in the UI.
@@ -304,7 +304,7 @@ export const ORGS = [
     pending: true,
   },
 
-  // ---------- Natural Sciences, Engineering and Technology (14) ----------
+  // ---------- Natural Sciences, Engineering and Technology (15) ----------
   {
     id: 'biophilic',
     name: 'BIOPHILIC Society',
@@ -471,6 +471,18 @@ export const ORGS = [
     fbUrl: 'https://www.facebook.com/XU.XCITES',
     fbHandle: 'XU.XCITES',
     logo: 'assets/orgs/xu-xcites.webp',
+    pending: true,
+  },
+  {
+    id: 'gems',
+    name: 'Xavier University - Guild of Entertainment and Multimedia Students',
+    short: 'GEMS',
+    tags: ['sci-eng-tech'],
+    keywords: ['entertainment', 'multimedia', 'media', 'gaming', 'games', 'animation', 'video', 'digital arts', 'design', 'streaming', 'content creation'],
+    emails: [],
+    fbUrl: 'https://www.facebook.com/profile.php?id=61592739895098',
+    fbHandle: null,
+    logo: null,
     pending: true,
   },
 

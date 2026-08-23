@@ -144,7 +144,7 @@ const ZONED = {
   aggies:      ['asc', 'aac', 'across', 'jpsas', 'paft', 'psae', 'paa-jrs'],
   sbm:         ['sbmsc', 'jpia', 'jma', 'jfinex', 'xu-jpama'],
   soe:         ['tg', 'xased', 'xuselics', 'spedsoc', 'xu-huge'],
-  compstud:    ['cssc', 'xcel', 'aissa', 'xu-xcites'],
+  compstud:    ['cssc', 'xcel', 'aissa', 'xu-xcites', 'gems'],
   nursing:     ['conus'],
   environment: ['nc'],
   faith:       ['chapel-aides', 'cya'],

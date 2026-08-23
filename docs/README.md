@@ -124,13 +124,13 @@ campus-compass/
 ### Categories (11 clusters)
 `src/js/data/categories.js` — one edit updates everywhere: chip row, tag cloud, card tags, booth tags, legend copy.
 
-### Orgs (68)
+### Orgs (69)
 `src/js/data/organizations.js` — pure data, generated from the official roster PDF
 ("Link + Name and Description + Org Head"), so names, e-mails and Facebook handles
 match the source exactly.
 
-* **68 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
-* **All 68 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
+* **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
+* **68 of 69 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
   roster PDF except XU-XCEED and IIEE, whose page pictures were supplied
   separately. Cards still fall back to initials when `logo` is null.
 * Every entry carries `pending: true` — the long-form copy (description, meeting
