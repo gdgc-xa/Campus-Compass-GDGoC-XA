@@ -92,6 +92,10 @@ function search(orgs, query) {
       org.fbHandle,
       ...(org.emails || []),
       ...org.tags.map(t => SHORT_LABEL[t] || t),
+      // Hand-written interest aliases — what a student actually types.
+      // Never displayed; they exist so "coders" finds XCEL and "farm"
+      // finds the agriculture orgs.
+      ...(org.keywords || []),
     ];
     return hay.some(v => v && String(v).toLowerCase().includes(q));
   });
