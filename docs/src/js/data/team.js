@@ -20,6 +20,11 @@ export const TEAM = [
     photo: null,
   },
   {
+    role: 'Cloud Dev Officer',
+    name: 'Tyrone Jay D. Castillo',
+    photo: null,
+  },
+  {
     role: 'Technology Department',
     name: 'Auztin Keefer F. Echem',
     photo: null,
