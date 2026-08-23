@@ -129,9 +129,9 @@ campus-compass/
 match the source exactly.
 
 * **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
-* **67 have logos**, lifted from the same PDF and re-encoded to 320px WebP in
-  `assets/orgs/`. Only IIEE and XU-XCEED were listed with
-  an e-mail only, so they render their initials instead.
+* **68 have logos**, re-encoded to 320px WebP in `assets/orgs/` — all from the
+  roster PDF except XU-XCEED, whose page picture was supplied separately. Only
+  IIEE has no logo, so it renders its initials instead.
 * Every entry carries `pending: true` — the long-form copy (description, meeting
   time, officers, events) is not in the roster. `fetchOrgFromFacebook(handle)` is
   the slot for it.

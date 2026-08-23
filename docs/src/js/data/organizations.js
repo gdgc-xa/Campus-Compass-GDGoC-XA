@@ -414,9 +414,9 @@ export const ORGS = [
     short: 'XU-XCEED',
     tags: ['sci-eng-tech'],
     emails: ['xuxceed@gmail.com'],
-    fbUrl: null,
-    fbHandle: null,
-    logo: null,
+    fbUrl: 'https://www.facebook.com/xuxceed',
+    fbHandle: 'xuxceed',
+    logo: 'assets/orgs/xu-xceed.webp',
     pending: true,
   },
   {
