@@ -494,7 +494,7 @@ export const ORGS = [
     short: 'XU-XCEED',
     tags: ['sci-eng-tech'],
     keywords: ['esports', 'gaming', 'games', 'competitive gaming', 'tournaments', 'entertainment'],
-    description: 'A technical student development organization focused on engineering project innovation, skill-building, and cross-disciplinary technical solutions.',
+    description: 'The campus esports and entertainment organization, growing Xavier Ateneo\'s competitive gaming community through tournaments, game nights, and player development.',
     emails: ['xuxceed@gmail.com'],
     fbUrl: 'https://www.facebook.com/xuxceed',
     fbHandle: 'xuxceed',
