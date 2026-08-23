@@ -1,6 +1,9 @@
 /* ============================================================
    screens/browse.js — filter state + grid render.
-   Multi-select intersecting chips + search + ghost cards.
+   One cluster chip at a time + search + ghost cards.
+
+   Single-select is not a preference: every org carries exactly one
+   tag, so intersecting two chips could only ever return nothing.
    ============================================================ */
 
 import { CATEGORIES, COLOR_OF, SHORT_LABEL } from '../data/categories.js';
@@ -14,7 +17,7 @@ import { renderBooth } from './booth.js';
 
 // ---------- Filter state (module-scope singleton) ----------
 const state = {
-  active: new Set(),   // category ids
+  active: null,   // one category id, or null for "all"
   query: '',
 };
 
@@ -26,8 +29,8 @@ const state = {
 export function initBrowse(root) {
   // --- Restore state from URL query ---
   const q = currentQuery();
-  state.active.clear();
-  (q.filters || []).forEach(id => state.active.add(id));
+  // Older links may carry ?filters=a,b — honour the first and drop the rest.
+  state.active = (q.filters && q.filters[0]) || null;
   state.query = q.q || '';
 
   // --- Sync search input value ---
@@ -48,8 +51,8 @@ export function initBrowse(root) {
       const chip = e.target.closest('.chip');
       if (!chip) return;
       const id = chip.dataset.categoryId;
-      if (state.active.has(id)) state.active.delete(id);
-      else state.active.add(id);
+      // Clicking the active chip clears it; anything else replaces it.
+      state.active = (state.active === id) ? null : id;
       render(root);
     });
   }
@@ -59,7 +62,7 @@ export function initBrowse(root) {
   if (clearBtn && !clearBtn.__wired) {
     clearBtn.__wired = true;
     clearBtn.addEventListener('click', () => {
-      state.active.clear();
+      state.active = null;
       state.query = '';
       if (searchShell) setSearchValue(searchShell, '');
       render(root);
@@ -71,9 +74,9 @@ export function initBrowse(root) {
 
 // ---------- Filter logic ----------
 
-function intersect(orgs, activeIds) {
-  if (activeIds.size === 0) return orgs;
-  return orgs.filter(org => [...activeIds].every(id => org.tags.includes(id)));
+function byCluster(orgs, activeId) {
+  if (!activeId) return orgs;
+  return orgs.filter(org => org.tags.includes(activeId));
 }
 
 function search(orgs, query) {
@@ -101,7 +104,6 @@ function render(root) {
   const grid    = root.querySelector('[data-card-grid]');
   const title   = root.querySelector('[data-browse-title]');
   const count   = root.querySelector('[data-browse-count]');
-  const note    = root.querySelector('[data-filter-note]');
   const clear   = root.querySelector('[data-clear-filters]');
   const foot    = root.querySelector('[data-grid-footnote]');
 
@@ -109,18 +111,17 @@ function render(root) {
   if (chipRow) renderChipRow(chipRow, state.active);
 
   // Filter
-  const filtered = search(intersect(ORGS, state.active), state.query);
+  const filtered = search(byCluster(ORGS, state.active), state.query);
   const total    = ORGS.length;
   const shownCount = filtered.length;
   const hiddenCount = total - shownCount;
 
   // Title
   if (title) {
-    if (state.active.size === 0 && !state.query) {
+    if (!state.active && !state.query) {
       title.textContent = 'All Xavier Ateneo orgs';
-    } else if (state.active.size >= 1) {
-      const labels = [...state.active].map(id => SHORT_LABEL[id]);
-      title.textContent = `${labels.join(' ∩ ')} orgs`;
+    } else if (state.active) {
+      title.textContent = `${SHORT_LABEL[state.active]} orgs`;
     } else {
       title.textContent = `Results for “${state.query}”`;
     }
@@ -129,26 +130,9 @@ function render(root) {
   // Count
   if (count) count.textContent = `${shownCount} org${shownCount === 1 ? '' : 's'}`;
 
-  // Intersection callout
-  if (note) {
-    if (state.active.size >= 2) {
-      const labels = [...state.active].map(id => `<strong>${SHORT_LABEL[id]}</strong>`);
-      const joined = labels.join(' AND ');
-      note.innerHTML = `
-        <svg class="filter-note__icon" viewBox="0 0 22 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <circle cx="7" cy="8" r="6"/><circle cx="15" cy="8" r="6"/>
-        </svg>
-        Showing orgs tagged with ${joined} — the intersection.
-      `;
-      note.hidden = false;
-    } else {
-      note.hidden = true;
-    }
-  }
-
   // Clear button visibility
   if (clear) {
-    clear.classList.toggle('is-visible', state.active.size > 0 || !!state.query);
+    clear.classList.toggle('is-visible', !!state.active || !!state.query);
   }
 
   // Grid
@@ -156,7 +140,7 @@ function render(root) {
     if (shownCount === 0) {
       grid.innerHTML = `
         <div class="filter-note filter-note--empty" style="grid-column: 1 / -1;">
-          <strong>No orgs match every filter.</strong>&nbsp;Loosen the intersection — remove a chip, or clear filters and start again.
+          <strong>Nothing matches that.</strong>&nbsp;Try a different cluster, or clear the filters and start again.
         </div>`;
     } else {
       const cards = filtered.map((org, i) => cardHtml(org, i)).join('');
@@ -170,7 +154,7 @@ function render(root) {
   // Footnote
   if (foot) {
     if (hiddenCount > 0 && shownCount > 0) {
-      foot.textContent = `Ghost cards indicate the ${hiddenCount} org${hiddenCount === 1 ? '' : 's'} filtered out. Remove a chip to widen the intersection.`;
+      foot.textContent = `Ghost cards indicate the ${hiddenCount} org${hiddenCount === 1 ? '' : 's'} filtered out. Clear the filter to see everything again.`;
       foot.hidden = false;
     } else {
       foot.hidden = true;
@@ -200,8 +184,7 @@ function wireCardClicks(grid) {
 function syncUrl() {
   const q = new URLSearchParams();
   q.set('screen', 'browse');
-  if (state.active.size === 1) q.set('filter', [...state.active][0]);
-  if (state.active.size > 1)   q.set('filters', [...state.active].join(','));
+  if (state.active) q.set('filter', state.active);
   if (state.query) q.set('q', state.query);
   // Preserve org param if the modal happens to be open
   const org = new URLSearchParams(location.search).get('org');

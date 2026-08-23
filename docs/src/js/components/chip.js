@@ -1,7 +1,11 @@
 /* ============================================================
-   components/chip.js — filter chip template + click wiring.
-   Wiring lives here (not in browse.js) so any screen using
-   chips gets identical behavior for free.
+   components/chip.js — filter chip template.
+   One chip is active at a time: every org carries exactly one
+   cluster tag, so two chips could never both match.
+
+   These stay toggle buttons rather than radios — a radio group
+   cannot be emptied, and clicking the active chip clears back to
+   "all orgs". aria-pressed carries that state correctly.
    ============================================================ */
 
 import { CATEGORIES, COLOR_OF, SHORT_LABEL } from '../data/categories.js';
@@ -13,9 +17,8 @@ export function chipHtml(categoryId, isActive = false) {
   const color = COLOR_OF[categoryId];
   return `
     <button class="chip"
-            role="checkbox"
+            type="button"
             aria-pressed="${isActive}"
-            aria-checked="${isActive}"
             data-category-id="${categoryId}"
             style="--chip-accent: var(--${color});">
       <span class="chip__dot" aria-hidden="true"></span>
@@ -28,11 +31,14 @@ export function chipHtml(categoryId, isActive = false) {
 }
 
 /**
- * renderChipRow(container, activeSet) — replace the container's
+ * renderChipRow(container, activeId) — replace the container's
  * chip children with the current active-state markup.
+ * `activeId` is one category id, or null for "all orgs".
  */
-export function renderChipRow(container, activeSet) {
+export function renderChipRow(container, activeId) {
+  container.setAttribute('role', 'group');
+  container.setAttribute('aria-label', 'Filter by cluster');
   container.innerHTML = CATEGORIES
-    .map(c => chipHtml(c.id, activeSet.has(c.id)))
+    .map(c => chipHtml(c.id, c.id === activeId))
     .join('');
 }
