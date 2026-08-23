@@ -6,7 +6,7 @@
    parsed straight from the document so the spelling, e-mail
    addresses and Facebook handles match it exactly.
 
-   69 organizations across 11 clusters. Logos were lifted from
+   68 organizations across 11 clusters. Logos were lifted from
    the same PDF and re-encoded to 320px WebP; orgs the roster
    listed without a logo carry `logo: null` and fall back to
    their initials in the UI.
@@ -740,7 +740,7 @@ export const ORGS = [
     pending: true,
   },
 
-  // ---------- Program-Based (2) ----------
+  // ---------- Program-Based (1) ----------
   {
     id: 'asul',
     name: 'Ateneo School for Upcoming Leaders',
@@ -750,17 +750,6 @@ export const ORGS = [
     fbUrl: 'https://www.facebook.com/ateneoleaders',
     fbHandle: 'ateneoleaders',
     logo: 'assets/orgs/asul.webp',
-    pending: true,
-  },
-  {
-    id: 'xupf',
-    name: 'Xavier University Peer Facilitators',
-    short: 'XUPF',
-    tags: ['program-based'],
-    emails: ['xavierpeerfacilitators@gmail.com'],
-    fbUrl: 'https://www.facebook.com/profile.php?id=100067648549022',
-    fbHandle: null,
-    logo: 'assets/orgs/xupf.webp',
     pending: true,
   },
 

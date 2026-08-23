@@ -61,14 +61,8 @@
   gap: var(--space-4);
 }
 
-/* Booth split (booth: 60/40 hero, then main+aside grid) */
-.booth-hero {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 0;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
+/* Booth split — the org's own card beside the Facebook preview + contact.
+   The hero itself is a plain card now and owns its own box in booth.css. */
 .booth-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -125,7 +119,6 @@
 
 /* Tablet — 900px and below drops booth to 1 column, hides screen-index */
 @media (max-width: 900px) {
-  .booth-hero { grid-template-columns: 1fr; }
   .booth-grid { grid-template-columns: 1fr; }
   .theme-block-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   .explore-head { grid-template-columns: 1fr; }

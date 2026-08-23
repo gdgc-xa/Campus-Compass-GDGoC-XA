@@ -54,8 +54,6 @@ campus-compass/
 │   │   │   ├── card.css             # org card (accent rail) + ghost placeholder variant
 │   │   │   ├── panel.css            # generic content panel + pending variant
 │   │   │   ├── facebook-card.css    # FB page mockup (with "Preview" chip)
-│   │   │   ├── leader.css           # leader tile
-│   │   │   ├── event.css            # event row with date tile
 │   │   │   ├── theme-block.css      # 4-color legend explainer
 │   │   │   ├── sea-scene.css        # ocean layer / foam / lines / sparkles / boats / birds bindings
 │   │   │   ├── footer.css           # sand footer + GDG credit + footprints delight
@@ -123,13 +121,13 @@ campus-compass/
 ### Categories (11 clusters)
 `src/js/data/categories.js` — one edit updates everywhere: chip row, tag cloud, card tags, booth tags, legend copy.
 
-### Orgs (69)
+### Orgs (68)
 `src/js/data/organizations.js` — pure data, generated from the official roster PDF
 ("Link + Name and Description + Org Head"), so names, e-mails and Facebook handles
 match the source exactly.
 
-* **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
-* **All 69 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
+* **68 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
+* **All 68 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
   roster PDF except XU-XCEED and IIEE, whose page pictures were supplied
   separately. Cards still fall back to initials when `logo` is null.
 * Every entry carries `pending: true` — the long-form copy (description, meeting

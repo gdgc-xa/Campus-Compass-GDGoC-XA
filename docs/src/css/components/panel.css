@@ -1,5 +1,5 @@
 /* ============================================================
-   panel.css — generic content panel (about / events / leaders / meta).
+   panel.css — generic content panel (the booth contact block).
    Rounded surface with an all-caps kicker label at the top.
    ============================================================ */
 
@@ -55,13 +55,6 @@
 .panel__row-value { color: var(--ink); font-weight: 600; text-align: right; }
 
 /* --- Placeholder state (org data not yet populated from FB) --- */
-.panel--pending {
-  border-style: dashed;
-}
-.panel--pending .panel__body p {
-  color: var(--muted);
-  font-style: italic;
-}
 
 
 /* --- Contact rows in the booth aside --- */

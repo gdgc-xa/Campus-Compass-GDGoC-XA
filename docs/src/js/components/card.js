@@ -67,7 +67,7 @@ export function cardHtml(org, i = 0) {
       <div class="card__body">${body}</div>
       <div class="card__foot">
         ${foot}
-        <span class="card__cta">Visit booth →</span>
+        <span class="card__cta">Know more →</span>
       </div>
     </button>
   `;
