@@ -410,7 +410,7 @@ export const ORGS = [
   },
   {
     id: 'xu-xceed',
-    name: 'XU-XCEED',
+    name: 'Xavier Campus Esports and Entertainment Development',
     short: 'XU-XCEED',
     tags: ['sci-eng-tech'],
     emails: ['xuxceed@gmail.com'],
@@ -421,7 +421,7 @@ export const ORGS = [
   },
   {
     id: 'xu-xcites',
-    name: 'XU-XCITES',
+    name: 'Xavier Circle of Information Technology Students',
     short: 'XU-XCITES',
     tags: ['sci-eng-tech'],
     emails: ['xu.ccs.xcites@gmail.com'],
