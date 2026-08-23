@@ -520,6 +520,7 @@ export const ORGS = [
     short: 'GEMS',
     tags: ['sci-eng-tech'],
     keywords: ['entertainment', 'multimedia', 'media', 'gaming', 'games', 'animation', 'video', 'digital arts', 'design', 'streaming', 'content creation'],
+    description: 'The student organization for Entertainment and Multimedia Computing majors, spanning game development, animation, digital design, and multimedia production.',
     emails: [],
     fbUrl: 'https://www.facebook.com/profile.php?id=61592739895098',
     fbHandle: null,
