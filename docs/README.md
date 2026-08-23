@@ -130,7 +130,7 @@ campus-compass/
 match the source exactly.
 
 * **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
-* **68 of 69 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
+* **All 69 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
   roster PDF except XU-XCEED and IIEE, whose page pictures were supplied
   separately. Cards still fall back to initials when `logo` is null.
 * Every entry carries `pending: true` — the long-form copy (description, meeting

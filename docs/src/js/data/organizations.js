@@ -482,7 +482,7 @@ export const ORGS = [
     emails: [],
     fbUrl: 'https://www.facebook.com/profile.php?id=61592739895098',
     fbHandle: null,
-    logo: null,
+    logo: 'assets/orgs/gems.webp',
     pending: true,
   },
 
