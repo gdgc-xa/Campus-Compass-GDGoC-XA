@@ -337,9 +337,9 @@ export const ORGS = [
     short: 'IIEE',
     tags: ['sci-eng-tech'],
     emails: ['iieecsc@my.xu.edu.ph'],
-    fbUrl: null,
-    fbHandle: null,
-    logo: null,
+    fbUrl: 'https://www.facebook.com/iieexavierateneo',
+    fbHandle: 'iieexavierateneo',
+    logo: 'assets/orgs/iiee.webp',
     pending: true,
   },
   {
