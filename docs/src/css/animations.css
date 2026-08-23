@@ -80,17 +80,6 @@
   82%       { opacity: 0;    transform: translateY(-3.5px)  scale(0.94); }
 }
 
-/* --- Cloud drift (very slow so sky feels alive, not moving) --- */
-@keyframes cloudDriftA {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-200px); }
-}
-@keyframes cloudDriftB {
-  from { transform: translateX(0); }
-  to   { transform: translateX(200px); }
-}
-
-
 /* --- Tide-line foam drift (footer top-down scene).
        Foam scallop periods divide 240 evenly, so a 240-unit
        shift lands the band exactly on itself. --- */

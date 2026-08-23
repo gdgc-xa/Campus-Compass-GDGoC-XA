@@ -34,7 +34,7 @@
 .booth-hero__body::before {
   content: "";
   position: absolute;
-  left: var(--space-5);
+  left: var(--bar-x, var(--space-5));
   top: var(--space-6);
   bottom: var(--space-6);
   width: 4px;
@@ -134,7 +134,14 @@
 @media (max-width: 900px) {
   .booth { padding: var(--space-4) var(--space-4) var(--space-6); }
   .booth-hero__title { font-size: 30px; }
-  .booth-hero__body { padding: var(--space-5) var(--space-4) var(--space-5) var(--space-5); }
+  /* The accent bar sits at --bar-x; the text must clear it, so the
+     left padding is always bar + bar width + breathing room. At the
+     old values both were --space-5 and the bar drew straight over the
+     first few pixels of every line. */
+  .booth-hero__body {
+    --bar-x: var(--space-4);
+    padding: var(--space-5) var(--space-4) var(--space-5) var(--space-6);
+  }
   .booth-hero__emblem { width: 88px; height: 88px; font-size: 26px; }
 }
 

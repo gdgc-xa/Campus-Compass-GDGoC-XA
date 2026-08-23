@@ -99,43 +99,6 @@
   .night-moon::after  { width: 7px;  height: 7px; }
 }
 
-/* ---------- CLOUDS — fluffy cumulus, very slow drift ---------- */
-.hero-scene__clouds {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: var(--horizon);
-  overflow: hidden;
-  z-index: 1;
-}
-.cloud {
-  position: absolute;
-  top: 0;
-  left: -25%;
-  width: 150%;
-  height: 100%;
-  will-change: transform;
-}
-.cloud svg { width: 100%; height: 100%; display: block; }
-.cloud--a { animation: cloudDriftA 90s linear infinite; }
-.cloud--b { animation: cloudDriftB 65s linear infinite; opacity: 0.75; }
-
-/* ---------- DISTANT HEADLANDS at the horizon line ---------- */
-.hero-scene__headland {
-  position: absolute;
-  left: 0; right: 0;
-  top: calc(var(--horizon) - 62px);
-  height: 64px;
-  z-index: 2;
-  opacity: 0.5;
-}
-.headland { position: absolute; bottom: 0; height: 100%; }
-.headland--left  { left: 1%;  width: 26%; }
-.headland--right { right: 1%; width: 30%; }
-.headland svg { width: 100%; height: 100%; display: block; }
-
-/* Islands read as solid black cut-outs at night */
-:root[data-theme="dark"] .hero-scene__headland { opacity: 0.85; }
-
 /* ---------- SEA — depth gradient, deep at horizon → pale at shore ---------- */
 .hero-scene__sea {
   position: absolute;
@@ -244,7 +207,6 @@
 .hero-accent--shell    { left: 88%; top: 26%; width: 62px; transform: rotate(20deg); }
 .hero-accent--crab     { left: 79%; top: 60%; width: 76px; }
 
-
 /* ============================================================
    Responsive — only sizes owned by this file. The band offsets
    themselves are stepped down in landing.css so the scene and
@@ -269,7 +231,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .palm-frond, .cloud, .hero-scene__surf, .night-star { animation: none !important; }
+  .palm-frond, .hero-scene__surf, .night-star { animation: none !important; }
 }
 
 /* ============================================================
@@ -308,5 +270,3 @@
     transparent 60%);
 }
 /* Clouds thin out and cool down at night */
-:root[data-theme="dark"] .cloud   { opacity: 0.35; }
-:root[data-theme="dark"] .cloud--b { opacity: 0.22; }

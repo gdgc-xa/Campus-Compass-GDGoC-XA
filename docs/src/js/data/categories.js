@@ -1,11 +1,11 @@
 /* ============================================================
-   data/categories.js — the 10 Xavier Ateneo clusters,
-   their color grouping, and the display labels.
+   data/categories.js — the 11 Xavier Ateneo clusters, their
+   puzzle-piece colour, and the display labels.
    Pure data. No DOM.
    ============================================================ */
 
 /**
- * A category is one of the 10 clusters. `color` picks the
+ * A category is one of the 11 clusters. `color` picks the
  * puzzle-piece hue — mapped to a CSS token by SHORT_LABEL wiring.
  */
 export const CATEGORIES = [
@@ -31,18 +31,3 @@ export const CATEGORIES = [
 export const SHORT_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.short]));
 export const FULL_LABEL  = Object.fromEntries(CATEGORIES.map(c => [c.id, c.full]));
 export const COLOR_OF    = Object.fromEntries(CATEGORIES.map(c => [c.id, c.color]));
-
-/**
- * Four-color theme grouping — matches DESIGN.md §3.
- */
-export const THEME_OF = {
-  blue:   { name: 'Mind',    clusters: ['Governance', 'Sci · Eng · Tech', 'Program-Based'] },
-  green:  { name: 'Ground',  clusters: ['Business', 'Sports', 'Environment']              },
-  yellow: { name: 'Culture', clusters: ['Food & Agri', 'Socio-Cultural', 'Religious']     },
-  red:    { name: 'Voice',   clusters: ['Media & Arts', 'Service-Learning']               },
-};
-
-/**
- * Ordered list of themes (light-to-dark reading order matches the mockup).
- */
-export const THEME_ORDER = ['blue', 'green', 'yellow', 'red'];

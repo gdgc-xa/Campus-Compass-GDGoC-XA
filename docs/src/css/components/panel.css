@@ -23,23 +23,6 @@
   margin-bottom: var(--space-3);
 }
 
-.panel__title {
-  font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.5px;
-  margin-bottom: var(--space-3);
-}
-
-.panel__body p {
-  font-size: 15px;
-  color: var(--ink-2);
-  line-height: 1.65;
-}
-.panel__body p + p { margin-top: var(--space-3); }
-
-/* --- At-a-glance rows (booth aside meta) --- */
 .panel__rows { display: block; }
 .panel__row {
   display: flex;
@@ -55,7 +38,6 @@
 .panel__row-value { color: var(--ink); font-weight: 600; text-align: right; }
 
 /* --- Placeholder state (org data not yet populated from FB) --- */
-
 
 /* --- Contact rows in the booth aside --- */
 .panel__row-value--link {

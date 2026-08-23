@@ -11,12 +11,6 @@
   padding: 0 var(--space-5);
 }
 
-/* Section spacing rhythm */
-.section {
-  padding-block: var(--space-8);
-}
-.section--tight { padding-block: var(--space-6); }
-
 /* Screen root — the visible page below the nav.
    The nav is sticky so screens don't need padding-top for it,
    but we ensure the first section breathes. */
@@ -133,7 +127,6 @@
 /* Mobile — ≤ 480px per DESIGN.md #5.4 */
 @media (max-width: 480px) {
   .wrap { padding: 0 var(--space-4); }
-  .section { padding-block: var(--space-6); }
   .card-grid { grid-template-columns: 1fr; }
   .tag-cloud {
     display: grid;
