@@ -8,7 +8,13 @@
 .landing-featured {
   position: relative;
   padding-block: var(--space-7) var(--space-8);
-  background: var(--surface-2);
+}
+
+.landing-featured .wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
 }
 
 .landing-featured__head {
