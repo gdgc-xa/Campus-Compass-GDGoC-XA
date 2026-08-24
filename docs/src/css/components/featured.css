@@ -17,6 +17,10 @@
   padding: var(--space-6);
 }
 
+.landing-featured .card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+}
+
 .landing-featured__head {
   display: flex;
   align-items: flex-end;
