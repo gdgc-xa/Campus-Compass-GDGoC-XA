@@ -124,15 +124,22 @@ campus-compass/
 ### Categories (11 clusters)
 `src/js/data/categories.js` — one edit updates everywhere: chip row, tag cloud, card tags, booth tags, legend copy.
 
-### Orgs (69)
+### Orgs (75)
 `src/js/data/organizations.js` — pure data, generated from the official roster PDF
 ("Link + Name and Description + Org Head"), so names, e-mails and Facebook handles
 match the source exactly.
 
-* **69 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
-* **All 69 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
+* **75 orgs across 11 clusters** (the roster adds **Religious** to the original ten).
+* **All 75 have logos**, re-encoded to 320px WebP in `assets/orgs/` — from the
   roster PDF except XU-XCEED and IIEE, whose page pictures were supplied
-  separately. Cards still fall back to initials when `logo` is null.
+  separately. Cards still fall back to initials when `logo` is null, though
+  nothing needs that at present. XELLO's roster artwork is a cover photo with
+  the seal small and centred, so its WebP is a centre crop on the seal rather
+  than the whole picture.
+* **Three are start-up orgs.** ATTG, Kazoku and Forerunners carry
+  `startup: true`, which renders a "Start-Up Org" pill on the card and in the
+  booth. It is a *status*, not a cluster — they still carry their normal
+  cluster tag and still turn up under that chip.
 * Every entry carries `pending: true` — the long-form copy (description, meeting
   time, officers, events) is not in the roster. `fetchOrgFromFacebook(handle)` is
   the slot for it.
@@ -157,6 +164,14 @@ match the source exactly.
 Toggle in the nav (sun / moon icon). Persists to `localStorage`. First-time visitors get the OS `prefers-color-scheme` value.
 
 ---
+
+### Facebook pages without a vanity handle
+
+Five pages in the roster have no vanity handle — GEMS, OSAS, CMMA and
+Forerunners are numeric `profile.php?id=…` links, and Kazoku is a legacy
+`/Name-<digits>/` URL. They carry `fbHandle: null`, and the card, booth and
+page card print the page's own address instead of a generic "Facebook page"
+label — never `facebook.com/<display name>`, which would not resolve.
 
 ## Facebook API integration slot
 

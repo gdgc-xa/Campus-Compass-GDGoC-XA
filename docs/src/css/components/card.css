@@ -27,11 +27,22 @@
   border-color: var(--border-strong);
 }
 
-/* --- Optional corner badge (org's own note, e.g. "Recruiting now") --- */
+/* --- Badges: start-up status and/or the org's own note ("Recruiting
+       now"). They sit top-right but IN FLOW, not absolutely positioned:
+       a floated badge printed itself over the first line of any card
+       title long enough to reach the corner, and both the badge text
+       and the org names are variable-width, so no fixed inset could be
+       trusted. In flow they reserve their own row and wrap when two of
+       them (start-up + featured) do not fit side by side. --- */
+.card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-self: stretch;
+  gap: var(--space-1);
+  margin-bottom: calc(var(--space-2) * -1);
+}
 .card__badge {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
   padding: 3px 10px;
   border-radius: 999px;
   font-size: 0.7rem;
@@ -41,6 +52,14 @@
   background: var(--card-accent-soft, var(--surface));
   border: 1px solid color-mix(in srgb, var(--card-accent, var(--border)) 35%, transparent);
   white-space: nowrap;
+}
+/* Start-up status is not a cluster, so it takes the --startup-* accent
+   rather than the card's category colour, and keeps a visible border the
+   cluster tags do not have — it never reads as a twelfth cluster. */
+.card__badge--startup {
+  color: var(--startup-ink);
+  background: var(--startup-soft);
+  border-color: color-mix(in srgb, var(--startup-edge) 45%, transparent);
 }
 
 /* --- Category-colored left rail (accent) --- */

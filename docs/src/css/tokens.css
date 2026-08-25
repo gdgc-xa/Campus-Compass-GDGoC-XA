@@ -26,6 +26,15 @@
   --sun-deep:      #B96A1A;
   --sun-soft:      #FBE4C8;
 
+  /* ---------- Start-up org status pill ----------
+     Deliberately NOT one of the four cluster hues — a start-up is a
+     status, not a twelfth cluster. Warm like the sun accent, but the
+     ink is darker than --sun-deep so 11px bold clears 4.5:1 on the
+     soft fill (--sun-deep itself only reaches 3.3:1 there). */
+  --startup-soft:  #FBE4C8;
+  --startup-ink:   #8A4A0C;
+  --startup-edge:  #E68A2E;
+
   /* ---------- Category accents ---------- */
   --blue:          #4285F4;   --blue-ink:   #1A56CB;   --blue-soft:   #E3ECFD;
   --red:           #EA4335;   --red-ink:    #B21E10;   --red-soft:    #FCE0DE;
@@ -223,6 +232,11 @@
   --sun:           #F4A050;   /* lantern glow */
   --sun-deep:      #E68A2E;
   --sun-soft:      #3A2818;
+
+  /* Start-up pill after dark — lantern-warm ink on deep sand. */
+  --startup-soft:  #3A2818;
+  --startup-ink:   #F4A050;
+  --startup-edge:  #E68A2E;
 
   --blue:          #6BA0FF;   --blue-ink:   #A9C7FF;   --blue-soft:   #1E2A45;
   --red:           #FF6B5F;   --red-ink:    #FFB0A9;   --red-soft:    #3A1D1B;
