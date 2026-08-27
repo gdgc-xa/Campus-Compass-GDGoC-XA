@@ -55,7 +55,7 @@
    ============================================================ */
 
 export const FEATURED = [
-  { id: 'gdgoc-xa', note: 'Example: Recruiting now', cta: 'Example: Join now →' },
+  { id: 'gdgoc-xa', note: 'Example: Accepting Partnerships', cta: 'Example: Apply now →' },
   // Add more featured orgs above this line, e.g.:
   // { id: 'jpia', note: 'New this term' },
 ];
