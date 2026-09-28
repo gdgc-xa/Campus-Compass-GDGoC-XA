@@ -66,6 +66,7 @@ export function currentQuery() {
     event:  q.get('event') || '',
     game:   q.get('game') || '',
     venue:  q.get('venue') || '',
+    mapsport: q.get('mapsport') || '',
     status: q.get('status') || '',
     sport:  q.get('sport') || '',
     tab:    q.get('tab') || '',

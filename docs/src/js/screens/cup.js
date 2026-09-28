@@ -5,8 +5,10 @@
    is shown at a time and the choice is kept in ?tab=…
 
      MAP        hero + counters (how many fixtures are upcoming /
-                live / done), and every venue as a pin. Selecting a
-                pin fills the panel beside it.
+                live / done), and the campus map. Tapping a venue
+                fills the panel beside it with what is live, upcoming
+                and finished there; tapping a sport's icon narrows
+                that to the one sport.
      FIXTURES   pick the team you follow (its games get a lime ring
                 everywhere), one featured match per day under a
                 ‹ day › pager, and the full list with status + sport
@@ -35,7 +37,7 @@ import { byWhen, parseDate, formatDay, formatTime, formatRange } from '../lib/da
 import { resolveGame } from '../components/game-card.js';
 import { matchCardHtml } from '../components/match-card.js';
 import { gameDetailHtml } from '../components/game-detail.js';
-import { cupMapHtml, cupLegendHtml, venueStats } from '../components/cup-map.js';
+import { mountCupMap, cupLegendHtml, venueStats, venueIcons } from '../components/cup-map.js';
 import { statusPillHtml, GAME_STATUS_LABEL } from '../components/status.js';
 import { mountTeamStrip } from '../components/team-strip.js';
 import { dayKey, gameDays, initialDay, gamesOn, pickFeatured, keyToDate } from '../components/featured-match.js';
@@ -70,6 +72,7 @@ const state = {
   status: 'all',
   sport: null,
   venue: null,
+  mapSport: null,     // a sport picked on the map, within state.venue
   featuredDay: '',
   calMonth: null,
   calDay: '',
@@ -77,6 +80,7 @@ const state = {
 
 let rootEl = null;
 let tick = null;
+let mapView = null;   // the mounted campus map (components/cup-map.js)
 
 /* ---------- Boot ---------- */
 
@@ -89,6 +93,7 @@ export function initCup(root) {
     : (CUP_CONFIG.defaultStatus || 'all');
   state.sport = q.sport || null;
   state.venue = (q.venue && VENUE_BY_ID[q.venue]) ? q.venue : null;
+  state.mapSport = state.venue ? (q.mapsport || null) : null;
 
   // Which view to open: the one named in the link, or the one a
   // filter in the link belongs to, or the first one.
@@ -137,9 +142,19 @@ export function initCup(root) {
 
     wireTabs(root);
 
+    // Taps on the map itself are handled by the map (mountCupMap);
+    // these are the venue list and the sport chips in the panel.
     root.addEventListener('click', (e) => {
-      const pin = e.target.closest('[data-venue-id]');
-      if (pin) { selectVenue(pin.dataset.venueId, { toggle: true }); return; }
+      const row = e.target.closest('[data-venue-id]');
+      if (row) { selectVenue(row.dataset.venueId, { toggle: true }); return; }
+
+      const venueSport = e.target.closest('[data-venue-sport]');
+      if (venueSport) {
+        const id = venueSport.dataset.venueSport;
+        state.mapSport = (id === 'all' || state.mapSport === id) ? null : id;
+        render();
+        return;
+      }
 
       const card = e.target.closest('[data-game-id]');
       if (card) { openGame(card.dataset.gameId); return; }
@@ -173,16 +188,6 @@ export function initCup(root) {
       }
 
       if (e.target.closest('[data-cup-clear-venue]')) { selectVenue(null); }
-    });
-
-    // Map pins are SVG groups, so they need their own key handling
-    // to behave like the buttons they are announced as.
-    root.addEventListener('keydown', (e) => {
-      if (e.key !== 'Enter' && e.key !== ' ') return;
-      const pin = e.target.closest?.('.cup-pin[data-venue-id]');
-      if (!pin) return;
-      e.preventDefault();
-      selectVenue(pin.dataset.venueId, { toggle: true });
     });
 
     renderNews(root);
@@ -407,7 +412,7 @@ function stepFeatured(dir) {
   }
 }
 
-/* --- The consolidated map + its venue panel --- */
+/* --- The campus map + its venue panel --- */
 function renderMap(root, games) {
   if (!CUP_CONFIG.showMap) return;
 
@@ -415,8 +420,16 @@ function renderMap(root, games) {
   const panel = root.querySelector('[data-cup-venue-panel]');
   const stats = venueStats(games);
 
+  // A sport picked on the map only stands while its venue still has it.
+  if (state.mapSport && !stats[state.venue]?.sports?.[state.mapSport]) state.mapSport = null;
+
   if (mapWrap) {
-    mapWrap.innerHTML = cupMapHtml(stats, { selected: state.venue });
+    mapView ??= mountCupMap(mapWrap, {
+      onVenue: (id) => selectVenue(id, { toggle: true }),
+      onSport: (id, sport) => selectSport(id, sport),
+      onClear: () => { if (state.venue) selectVenue(null); },
+    });
+    mapView.update({ stats, venue: state.venue, sport: state.mapSport });
   }
 
   const legend = root.querySelector('[data-cup-legend]');
@@ -434,9 +447,13 @@ function renderMap(root, games) {
     const rows = CUP_MAP.venues.map(v => {
       const s = stats[v.id];
       const total = s?.total ?? 0;
+      const sports = venueIcons(v, s).map(i => i.sport);
       return `
         <button class="venue-row${total ? '' : ' is-empty'}" type="button" data-venue-id="${escapeAttr(v.id)}">
-          <span class="venue-row__name">${escapeHtml(v.name)}</span>
+          <span class="venue-row__text">
+            <span class="venue-row__name">${escapeHtml(v.name)}</span>
+            ${sports.length ? `<span class="venue-row__sports">${escapeHtml(sports.join(' · '))}</span>` : ''}
+          </span>
           <span class="venue-row__count">${total ? `${total} ${total === 1 ? 'game' : 'games'}` : 'None'}</span>
           ${s?.ongoing ? `<span class="venue-row__live">Live</span>` : ''}
         </button>`;
@@ -446,15 +463,28 @@ function renderMap(root, games) {
       <div class="venue-panel__head">
         <p class="panel__kicker">All venues</p>
         <h3 class="venue-panel__title">${CUP_MAP.venues.length} venues · ${games.length} fixtures</h3>
-        <p class="venue-panel__hint">Pick a pin on the map, or a venue below, to see what is on there.</p>
+        <p class="venue-panel__hint">Tap a venue or a sport on the map, or pick a venue below, to see what is on there.</p>
       </div>
       <div class="venue-rows">${rows}</div>`;
     return;
   }
 
   const venue = VENUE_BY_ID[state.venue];
-  const here = games.filter(g => g.venueId === state.venue);
+  const vstat = stats[state.venue];
+  const sports = venueIcons(venue, vstat).map(i => i.sport);
+  const here = games.filter(g => g.venueId === state.venue && (!state.mapSport || g.sport === state.mapSport));
   const group = (status) => here.filter(g => g.status === status);
+
+  // More than one sport here: chips to narrow the list, "All sports"
+  // being the way back from a sport icon to the whole venue.
+  const sportChips = sports.length > 1 ? `
+    <div class="venue-panel__sports" role="group" aria-label="Sports at ${escapeAttr(venue.name)}">
+      <button class="chip chip--plain" type="button" data-venue-sport="all"
+              aria-pressed="${!state.mapSport}">All sports <span class="chip__count">${vstat.total}</span></button>
+      ${sports.map(s => `
+        <button class="chip chip--plain" type="button" data-venue-sport="${escapeAttr(s)}"
+                aria-pressed="${state.mapSport === s}">${escapeHtml(s)} <span class="chip__count">${vstat.sports[s].total}</span></button>`).join('')}
+    </div>` : '';
 
   const section = (status, label) => {
     const list = group(status);
@@ -471,6 +501,7 @@ function renderMap(root, games) {
       <p class="panel__kicker">Venue</p>
       <h3 class="venue-panel__title">${escapeHtml(venue.name)}</h3>
       ${venue.note ? `<p class="venue-panel__hint">${escapeHtml(venue.note)}</p>` : ''}
+      ${sportChips}
       <button class="btn btn--ghost btn--sm venue-panel__clear" type="button" data-cup-clear-venue>
         ← All venues
       </button>
@@ -480,7 +511,9 @@ function renderMap(root, games) {
       ${section('upcoming', 'Upcoming')}
       ${section('finished', 'Finished')}
     ` : `
-      <p class="venue-panel__empty">No fixtures scheduled here yet.</p>
+      <p class="venue-panel__empty">${state.mapSport
+        ? `No ${escapeHtml(state.mapSport)} fixtures here yet.`
+        : 'No fixtures scheduled here yet.'}</p>
     `}`;
 }
 
@@ -964,14 +997,33 @@ function eventsHtml() {
 
 /* ---------- Selection + navigation ---------- */
 
+/**
+ * selectVenue(id) — show everything at one venue (null = the list).
+ * With toggle, tapping the venue already shown clears it — unless a
+ * sport was picked there, in which case it widens back to all sports.
+ */
 function selectVenue(id, { toggle: toggleSame = false } = {}) {
-  const next = (toggleSame && state.venue === id) ? null : (id || null);
+  const next = (toggleSame && state.venue === id && !state.mapSport) ? null : (id || null);
   state.venue = (next && VENUE_BY_ID[next]) ? next : null;
+  state.mapSport = null;
   render();
+  revealPanel();
+}
 
-  // Keep the panel in view when a pin is tapped on a phone, where
-  // it sits below the fold under the map.
-  if (state.venue && window.matchMedia('(max-width: 900px)').matches) {
+/** selectSport(venue, sport) — one sport's games at one venue, from
+    its icon on the map. Tapping the same icon again widens back out. */
+function selectSport(id, sport) {
+  const same = state.venue === id && state.mapSport === sport;
+  state.venue = VENUE_BY_ID[id] ? id : null;
+  state.mapSport = (state.venue && !same) ? sport : null;
+  render();
+  revealPanel();
+}
+
+/* Keep the panel in view after a tap on a phone, where it sits
+   below the fold under the map. */
+function revealPanel() {
+  if (state.venue && window.matchMedia('(max-width: 1000px)').matches) {
     rootEl?.querySelector('[data-cup-venue-panel]')
       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -1003,6 +1055,7 @@ function syncUrl() {
   if (state.status !== 'all') q.set('status', state.status);
   if (state.sport) q.set('sport', state.sport);
   if (state.venue) q.set('venue', state.venue);
+  if (state.mapSport) q.set('mapsport', state.mapSport);
   const open = new URLSearchParams(location.search).get('game');
   if (open) q.set('game', open);
   history.replaceState(null, '', `?${q.toString()}`);

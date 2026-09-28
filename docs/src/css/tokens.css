@@ -265,6 +265,44 @@
   --tx-on-final:      var(--ink);
   --tx-scorebox:      var(--surface-2);
   --tx-glow:          transparent;
+
+  /* ============================================================
+     CAMPUS MAP — the Xavier Cup's drawing of the campus.
+     Every value is built from the tokens above rather than given
+     a colour of its own, so all three designs and both themes
+     colour the map with no extra rules: the grounds take the
+     Cup's soft green, buildings the muted surface, and the sports
+     venues the four site hues. Pitch lines stay chalk-white.
+     ============================================================ */
+  --campus-ground:        var(--surface-2);
+  --campus-land:          color-mix(in srgb, var(--cup-green-soft) 72%, var(--surface));
+  --campus-land-edge:     color-mix(in srgb, var(--cup-green) 30%, var(--campus-land));
+  --campus-walk:          color-mix(in srgb, var(--surface) 78%, var(--campus-land));
+  --campus-road:          color-mix(in srgb, var(--ink) 10%, var(--surface-2));
+  --campus-road-line:     var(--surface);
+  --campus-building:      color-mix(in srgb, var(--ink) 6%, var(--surface-2));
+  --campus-building-edge: color-mix(in srgb, var(--ink) 24%, var(--surface-2));
+  --campus-roof:          color-mix(in srgb, var(--ink) 22%, transparent);
+  --campus-label:         var(--ink-2);
+  --campus-landmark:      var(--muted);
+  --campus-field:         color-mix(in srgb, var(--green) 42%, var(--surface));
+  --campus-field-edge:    color-mix(in srgb, var(--green) 64%, var(--surface));
+  --campus-court:         color-mix(in srgb, var(--blue) 28%, var(--surface));
+  --campus-gym:           color-mix(in srgb, var(--yellow) 36%, var(--surface));
+  --campus-church:        color-mix(in srgb, var(--red) 26%, var(--surface));
+  --campus-marking:       rgba(255, 255, 255, 0.88);
+  --campus-select:        var(--tx-primary);
+  --campus-on-select:     var(--tx-on-primary);
+  --campus-live:          var(--tx-live);
+  --campus-on-live:       var(--tx-on-live);
+  --campus-tag:           var(--surface);
+  --campus-tag-ink:       var(--ink);
+  --campus-shadow:        color-mix(in srgb, var(--ink) 22%, transparent);
+
+  /* Building names on the drawing: a condensed face, so the long
+     ones fit inside their footprints. Archivo is already loaded
+     (index.html) with its width axis. */
+  --font-map: "Archivo", "Arial Narrow", "Roboto Condensed", var(--font-body);
 }
 
 /* ============================================================

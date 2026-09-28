@@ -5,7 +5,7 @@
    Four things live in here and each can be edited on its own:
 
      1. CUP_CONFIG  which sections of the tab appear at all
-     2. CUP_MAP     the campus map: landmarks + venue pins
+     2. CUP_MAP     the venues, what is played where, the 3D view
      3. GAMES       every match, with its venue and kickoff time
      4. CUP_NEWS    the News & Updates column
      5. CUP_EVENTS  the Upcoming Events cards under the news
@@ -77,109 +77,114 @@ export const CUP_CONFIG = {
 /* ============================================================
    2. THE MAP
    ------------------------------------------------------------
-   Coordinates are in the map's own viewBox units, NOT pixels, so
-   they never change when the map is resized.
+   The campus itself (every building, path and gate) is drawn in
+   data/campus-map.js and rarely needs touching. What lives here
+   is what changes with the season: which buildings are venues,
+   where each sport's icon sits, and the 3D view's settings.
 
-   To move a pin: change its x / y. To add a venue: add an entry
-   to `venues` and point a game's `venue` at its id. To reshape
-   the campus: edit `landmarks` (rounded blocks) and `areas`
-   (the green open spaces).
+   To add a venue: add an entry below whose `id` (or `footprint`)
+   is a building id from data/campus-map.js, then point games at
+   it. The footprint lights up and becomes tappable on its own.
 
-   Pins sit at the CENTRE of where you want them.
+   Positions (`label`, `at`) are in the drawing's own units — the
+   same numbers as data/campus-map.js, not pixels — so they never
+   change when the map is resized or zoomed.
    ============================================================ */
 export const CUP_MAP = {
-  viewBox: '0 0 960 640',
-
-  /* Green open spaces, drawn first (underneath everything). */
-  areas: [
-    { id: 'quad',  label: 'The Quadrangle', x: 300, y: 190, w: 360, h: 230, rx: 14 },
-    { id: 'field', label: 'Football Field', x: 96,  y: 430, w: 300, h: 160, rx: 14 },
-  ],
-
-  /* Buildings — the things students actually navigate by. */
-  landmarks: [
-    { label: 'SBM Building',   x: 300, y: 56,  w: 360, h: 46, dir: 'h' },
-    { label: 'Chapel',         x: 96,  y: 190, w: 120, h: 54, dir: 'h' },
-    { label: 'Science Centrum',x: 96,  y: 286, w: 120, h: 96, dir: 'h' },
-    { label: 'Engineering',    x: 744, y: 150, w: 120, h: 90,  dir: 'h' },
-    { label: 'Faber Hall',     x: 744, y: 430, w: 120, h: 90,  dir: 'h' },
-    { label: 'Loyola Hall',    x: 452, y: 520, w: 208, h: 60,  dir: 'h' },
-    { label: 'Haggerty',       x: 688, y: 520, w: 160, h: 60,  dir: 'h' },
-  ],
-
-  /* Walkways, purely for orientation. */
-  paths: [
-    'M 276 160 L 276 600',
-    'M 684 160 L 684 600',
-    'M 60 440 L 900 440',
-    'M 276 176 L 684 176',
-  ],
-
   /* --- VENUES --------------------------------------------------
-     id     referenced by each game's `venue`
-     name   full name shown in the panel and the detail view
-     short  what fits inside a pin label
-     x / y  centre of the pin, in viewBox units
-     note   the walking directions line
-     indoor purely cosmetic — indoor pins get a roof glyph
+     id         referenced by each game's `venue`
+     footprint  the building in data/campus-map.js (defaults to id)
+     name       full name, shown in the panel and the detail view
+     short      the name tag on the map
+     label      [x, y] where that name tag sits on the drawing
+     gps        [longitude, latitude] of the tag in the 3D view
+     indoor     true for roofed venues
+     note       the walking-directions line
+     icons      where each sport's icon sits at this venue:
+                  at   [x, y] on the drawing
+                  gps  optional [longitude, latitude] in 3D;
+                       without it the icon uses the venue's gps
+                A sport only shows here once GAMES has a fixture
+                for it at this venue. One with no spot listed is
+                placed automatically above the name tag.
      ------------------------------------------------------------ */
   venues: [
     {
+      id: 'soccer-field',
+      name: 'XU Soccer Field',
+      short: 'Soccer Field',
+      label: [224, 240],
+      gps: [124.6478329, 8.4761031],
+      indoor: false,
+      note: 'Behind Loyola House and Haggerty, across the walkway from the SBM Building.',
+      icons: {
+        Soccer:   { at: [203, 202] },
+        Frisbee:  { at: [225, 218], gps: [124.64828633923103, 8.476343007092051] },
+        Softball: { at: [260, 202], gps: [124.64746719564286, 8.475821935655013] },
+      },
+    },
+    {
       id: 'covered-court',
-      name: 'Xavier Covered Court',
+      name: 'XU Covered Court',
       short: 'Covered Court',
-      x: 480, y: 250,
+      label: [241, 337],
+      gps: [124.6478784, 8.4769404],
       indoor: true,
-      note: 'Centre of the quad, straight down from the SBM Building steps.',
+      note: 'Past the SBM Building, between the Physical Plant Office and Social Science.',
+      icons: {
+        Volleyball: { at: [241, 301] },
+      },
     },
     {
-      id: 'loyola-gym',
-      name: 'Loyola Gymnasium',
-      short: 'Loyola Gym',
-      x: 556, y: 470,
+      id: 'xu-gym',
+      name: 'Xavier University Gym',
+      short: 'University Gym',
+      label: [481, 352],
+      gps: [124.6465004, 8.4775435],
       indoor: true,
-      note: 'South end of campus, beside Loyola Hall.',
-    },
-    {
-      id: 'football-field',
-      name: 'Football Field',
-      short: 'Field',
-      x: 246, y: 510,
-      indoor: false,
-      note: 'The open field west of the walkway, behind the Science Centrum.',
-    },
-    {
-      id: 'oval',
-      name: 'Athletics Oval',
-      short: 'Oval',
-      x: 480, y: 366,
-      indoor: false,
-      note: 'The track ringing the lower quad.',
-    },
-    {
-      id: 'sbm-av',
-      name: 'SBM Audio-Visual Room',
-      short: 'SBM AVR',
-      x: 400, y: 142,
-      indoor: true,
-      note: 'Second floor of the SBM Building, first door past the lobby.',
-    },
-    {
-      id: 'eng-court',
-      name: 'Engineering Court',
-      short: 'Eng Court',
-      x: 804, y: 330,
-      indoor: false,
-      note: 'The hard court behind the Engineering Building.',
+      note: 'Beside the SPED Lab and the Agriculture Building, on the Corrales Avenue side.',
+      icons: {
+        Basketball: { at: [481, 324] },
+      },
     },
   ],
+
+  /* --- SPORT ICONS ---------------------------------------------
+     The picture for each sport, keyed by the sport exactly as it
+     is written in GAMES. A sport with no picture still shows — as
+     a plain badge with its first letter.
+     ------------------------------------------------------------ */
+  sportIcons: {
+    Basketball: 'assets/sports/basketball.webp',
+    Soccer:     'assets/sports/soccer.webp',
+    Frisbee:    'assets/sports/frisbee.webp',
+    Softball:   'assets/sports/softball.webp',
+    Volleyball: 'assets/sports/volleyball.webp',
+  },
+
+  /* --- THE 3D VIEW ---------------------------------------------
+     Mapbox draws the campus in 3D. It needs a public access token
+     (it starts with pk.) from a free Mapbox account. Public tokens
+     are meant to ship in a website, but restrict this one to the
+     site's address in the Mapbox dashboard (URL restrictions) so
+     nobody else can use up the free monthly quota.
+
+     While token is empty, the 2D / 3D switch does not appear at
+     all and the map stays 2D.
+     ------------------------------------------------------------ */
+  mapbox: {
+    token: '',
+    style: 'mapbox://styles/mapbox/standard',
+    version: '3.28.0',
+  },
 };
 
 /* ============================================================
    3. THE FIXTURES
    ------------------------------------------------------------
    id        unique, url-safe (used in the ?game=… link)
-   sport     free text — the sport chips are built from these
+   sport     free text — the sport chips are built from these, and
+             the same spelling picks its map icon (CUP_MAP.sportIcons)
    division  optional ('Men', 'Women', 'Mixed', 'Open')
    round     optional ('Elimination', 'Semifinal', 'Final')
    teams     [home, away] as ids from data/teams.js ('ccs', 'eng').
@@ -204,121 +209,120 @@ export const CUP_MAP = {
 export const GAMES = [
   /* ---- Day 1 · Sat, Oct 10 ---- */
   { id: 'd1-bb-m-ccs-eng', sport: 'Basketball', division: 'Men', round: 'Elimination',
-    teams: ['ccs', 'eng'], venue: 'covered-court', start: '2026-10-10T09:00', end: '2026-10-10T10:30',
+    teams: ['ccs', 'eng'], venue: 'xu-gym', start: '2026-10-10T09:00', end: '2026-10-10T10:30',
     score: { home: 64, away: 71 },
     description: 'Opening game of the men’s bracket. The Warriors pulled away in the fourth quarter.' },
   { id: 'd1-vb-w-nsg-med', sport: 'Volleyball', division: 'Women', round: 'Elimination',
-    teams: ['nsg', 'med'], venue: 'loyola-gym', start: '2026-10-10T10:30', end: '2026-10-10T12:00',
+    teams: ['nsg', 'med'], venue: 'covered-court', start: '2026-10-10T10:30', end: '2026-10-10T12:00',
     score: { home: 3, away: 1 },
     description: 'Women’s volleyball elimination, taken in four sets.' },
-  { id: 'd1-fb-sbm-cas', sport: 'Football', division: 'Open', round: 'Elimination',
-    teams: ['sbm', 'cas'], venue: 'football-field', start: '2026-10-10T16:30', end: '2026-10-10T18:00',
+  { id: 'd1-sc-sbm-cas', sport: 'Soccer', division: 'Open', round: 'Elimination',
+    teams: ['sbm', 'cas'], venue: 'soccer-field', start: '2026-10-10T16:30', end: '2026-10-10T18:00',
     score: { home: 2, away: 2 },
-    description: 'First football fixture after the opening parade. A late equaliser split the points.' },
+    description: 'First soccer fixture after the opening parade. A late equaliser split the points.' },
 
   /* ---- Day 2 · Sun, Oct 11 ---- */
-  { id: 'd2-bd-mx-law-agsoe', sport: 'Badminton', division: 'Mixed', round: 'Elimination',
-    teams: ['law', 'agsoe'], venue: 'eng-court', start: '2026-10-11T09:00', end: '2026-10-11T10:30',
-    score: { home: 2, away: 1 },
-    description: 'Mixed doubles, best of three sets.' },
-  { id: 'd2-es-ml-ccs-sbm', sport: 'Esports', division: 'Open', round: 'Round 1',
-    teams: ['ccs', 'sbm'], venue: 'sbm-av', start: '2026-10-11T13:00', end: '2026-10-11T16:00',
-    score: { home: 2, away: 0 },
-    description: 'Opening round of the esports bracket, best of three.' },
+  { id: 'd2-fr-mx-law-agsoe', sport: 'Frisbee', division: 'Mixed', round: 'Elimination',
+    teams: ['law', 'agsoe'], venue: 'soccer-field', start: '2026-10-11T09:00', end: '2026-10-11T10:30',
+    score: { home: 13, away: 11 },
+    description: 'Mixed ultimate, first to 13.' },
+  { id: 'd2-sb-w-ccs-sbm', sport: 'Softball', division: 'Women', round: 'Elimination',
+    teams: ['ccs', 'sbm'], venue: 'soccer-field', start: '2026-10-11T13:00', end: '2026-10-11T15:00',
+    score: { home: 7, away: 4 },
+    description: 'Opening game of the softball bracket, seven innings.' },
   { id: 'd2-bb-w-cas-nsg', sport: 'Basketball', division: 'Women', round: 'Elimination',
-    teams: ['cas', 'nsg'], venue: 'covered-court', start: '2026-10-11T16:00', end: '2026-10-11T17:30',
+    teams: ['cas', 'nsg'], venue: 'xu-gym', start: '2026-10-11T16:00', end: '2026-10-11T17:30',
     score: { home: 48, away: 52 },
     description: 'Women’s basketball elimination. The Pythons closed it out at the line.' },
 
   /* ---- Day 3 · Mon, Oct 12 ---- */
   { id: 'd3-vb-m-eng-agsoe', sport: 'Volleyball', division: 'Men', round: 'Elimination',
-    teams: ['eng', 'agsoe'], venue: 'loyola-gym', start: '2026-10-12T09:30', end: '2026-10-12T11:00',
+    teams: ['eng', 'agsoe'], venue: 'covered-court', start: '2026-10-12T09:30', end: '2026-10-12T11:00',
     score: { home: 3, away: 1 },
     description: 'Men’s volleyball elimination. The Warriors’ block held all morning.' },
-  { id: 'd3-bd-mx-sbm-med', sport: 'Badminton', division: 'Mixed', round: 'Elimination',
-    teams: ['sbm', 'med'], venue: 'eng-court', start: '2026-10-12T11:00', end: '2026-10-12T12:30',
-    score: { home: 0, away: 2 },
-    description: 'Mixed doubles, best of three sets.' },
+  { id: 'd3-fr-mx-sbm-med', sport: 'Frisbee', division: 'Mixed', round: 'Elimination',
+    teams: ['sbm', 'med'], venue: 'soccer-field', start: '2026-10-12T11:00', end: '2026-10-12T12:30',
+    score: { home: 9, away: 13 },
+    description: 'Mixed ultimate, first to 13.' },
   { id: 'd3-bb-m-law-cas', sport: 'Basketball', division: 'Men', round: 'Elimination',
-    teams: ['law', 'cas'], venue: 'covered-court', start: '2026-10-12T14:30', end: '2026-10-12T16:00',
+    teams: ['law', 'cas'], venue: 'xu-gym', start: '2026-10-12T14:30', end: '2026-10-12T16:00',
     score: { home: 41, away: 38 },
     description: 'Men’s basketball elimination. Winner stays in the race for a semifinal slot.' },
-  { id: 'd3-fb-nsg-ccs', sport: 'Football', division: 'Open', round: 'Elimination',
-    teams: ['nsg', 'ccs'], venue: 'football-field', start: '2026-10-12T15:00', end: '2026-10-12T16:30',
+  { id: 'd3-sc-nsg-ccs', sport: 'Soccer', division: 'Open', round: 'Elimination',
+    teams: ['nsg', 'ccs'], venue: 'soccer-field', start: '2026-10-12T15:00', end: '2026-10-12T16:30',
     score: { home: 1, away: 0 },
-    description: 'Football elimination. A draw sends both sides into the play-off on the final weekend.' },
-  { id: 'd3-es-ml-eng-med', sport: 'Esports', division: 'Open', round: 'Round 1',
-    teams: ['eng', 'med'], venue: 'sbm-av', start: '2026-10-12T15:30', end: '2026-10-12T18:00',
-    score: { home: 0, away: 0 },
-    description: 'Esports round one, best of three.' },
-  { id: 'd3-vb-w-sbm-law', sport: 'Volleyball', division: 'Women', round: 'Elimination',
-    teams: ['sbm', 'law'], venue: 'loyola-gym', start: '2026-10-12T17:00', end: '2026-10-12T18:30',
-    description: 'Women’s volleyball elimination under the lights.' },
+    description: 'Soccer elimination. A draw sends both sides into the play-off on the final weekend.' },
+  { id: 'd3-vb-w-eng-med', sport: 'Volleyball', division: 'Women', round: 'Elimination',
+    teams: ['eng', 'med'], venue: 'covered-court', start: '2026-10-12T15:30', end: '2026-10-12T17:00',
+    score: { home: 1, away: 0 },
+    description: 'Women’s volleyball elimination, best of five sets.' },
+  { id: 'd3-sb-w-sbm-law', sport: 'Softball', division: 'Women', round: 'Elimination',
+    teams: ['sbm', 'law'], venue: 'soccer-field', start: '2026-10-12T17:00', end: '2026-10-12T18:30',
+    description: 'Softball elimination under the lights, once the soccer is done.' },
 
   /* ---- Day 4 · Tue, Oct 13 ---- */
-  { id: 'd4-bd-mx-nsg-cas', sport: 'Badminton', division: 'Mixed', round: 'Elimination',
-    teams: ['nsg', 'cas'], venue: 'eng-court', start: '2026-10-13T15:00', end: '2026-10-13T16:30',
-    description: 'Mixed doubles, best of three sets.' },
+  { id: 'd4-fr-mx-nsg-cas', sport: 'Frisbee', division: 'Mixed', round: 'Elimination',
+    teams: ['nsg', 'cas'], venue: 'soccer-field', start: '2026-10-13T15:00', end: '2026-10-13T16:30',
+    description: 'Mixed ultimate, first to 13.' },
   { id: 'd4-bb-w-ccs-med', sport: 'Basketball', division: 'Women', round: 'Elimination',
-    teams: ['ccs', 'med'], venue: 'covered-court', start: '2026-10-13T16:00', end: '2026-10-13T17:30',
+    teams: ['ccs', 'med'], venue: 'xu-gym', start: '2026-10-13T16:00', end: '2026-10-13T17:30',
     description: 'Women’s basketball elimination.' },
 
   /* ---- Day 5 · Wed, Oct 14 ---- */
   { id: 'd5-vb-m-ccs-sbm', sport: 'Volleyball', division: 'Men', round: 'Elimination',
-    teams: ['ccs', 'sbm'], venue: 'loyola-gym', start: '2026-10-14T16:00', end: '2026-10-14T17:30',
+    teams: ['ccs', 'sbm'], venue: 'covered-court', start: '2026-10-14T16:00', end: '2026-10-14T17:30',
     description: 'Men’s volleyball elimination.' },
-  { id: 'd5-fb-eng-law', sport: 'Football', division: 'Open', round: 'Elimination',
-    teams: ['eng', 'law'], venue: 'football-field', start: '2026-10-14T16:00', end: '2026-10-14T17:30',
-    description: 'Last round of football eliminations.' },
+  { id: 'd5-sc-eng-law', sport: 'Soccer', division: 'Open', round: 'Elimination',
+    teams: ['eng', 'law'], venue: 'soccer-field', start: '2026-10-14T16:00', end: '2026-10-14T17:30',
+    description: 'Last round of soccer eliminations.' },
 
   /* ---- Day 6 · Thu, Oct 15 ---- */
-  { id: 'd6-es-ml-nsg-agsoe', sport: 'Esports', division: 'Open', round: 'Round 1',
-    teams: ['nsg', 'agsoe'], venue: 'sbm-av', start: '2026-10-15T13:00', end: '2026-10-15T16:00',
-    description: 'Esports round one, best of three.' },
+  { id: 'd6-sb-w-nsg-agsoe', sport: 'Softball', division: 'Women', round: 'Elimination',
+    teams: ['nsg', 'agsoe'], venue: 'soccer-field', start: '2026-10-15T13:00', end: '2026-10-15T15:00',
+    description: 'Softball elimination, seven innings.' },
   { id: 'd6-bb-m-sbm-agsoe', sport: 'Basketball', division: 'Men', round: 'Elimination',
-    teams: ['sbm', 'agsoe'], venue: 'covered-court', start: '2026-10-15T17:00', end: '2026-10-15T18:30',
+    teams: ['sbm', 'agsoe'], venue: 'xu-gym', start: '2026-10-15T17:00', end: '2026-10-15T18:30',
     description: 'Men’s basketball elimination.' },
 
   /* ---- Day 7 · Fri, Oct 16 ---- */
-  { id: 'd7-cheerdance', sport: 'Cheerdance', division: 'Open', round: 'Competition',
-    teams: ['All colleges'], venue: 'covered-court', start: '2026-10-16T18:00', end: '2026-10-16T21:00',
-    note: 'All colleges',
-    description: 'Every college takes the floor in one night. Doors open at 5:00 PM; bring your college colours.' },
+  { id: 'd7-sb-w-semi', sport: 'Softball', division: 'Women', round: 'Semifinal',
+    teams: ['ccs', 'nsg'], venue: 'soccer-field', start: '2026-10-16T14:00', end: '2026-10-16T16:00',
+    description: 'Softball semifinal.' },
 
   /* ---- Day 8 · Sat, Oct 17 ---- */
   { id: 'd8-vb-w-semi-1', sport: 'Volleyball', division: 'Women', round: 'Semifinal',
-    teams: ['nsg', 'law'], venue: 'loyola-gym', start: '2026-10-17T14:00', end: '2026-10-17T16:00',
+    teams: ['nsg', 'law'], venue: 'covered-court', start: '2026-10-17T14:00', end: '2026-10-17T16:00',
     description: 'First women’s volleyball semifinal.' },
   { id: 'd8-bb-m-semi-1', sport: 'Basketball', division: 'Men', round: 'Semifinal',
-    teams: ['eng', 'cas'], venue: 'covered-court', start: '2026-10-17T16:00', end: '2026-10-17T17:30',
+    teams: ['eng', 'cas'], venue: 'xu-gym', start: '2026-10-17T16:00', end: '2026-10-17T17:30',
     description: 'First men’s basketball semifinal.' },
 
   /* ---- Day 9 · Sun, Oct 18 ---- */
-  { id: 'd9-bd-mx-final', sport: 'Badminton', division: 'Mixed', round: 'Final',
-    teams: ['med', 'agsoe'], venue: 'eng-court', start: '2026-10-18T10:00', end: '2026-10-18T11:30',
+  { id: 'd9-fr-mx-final', sport: 'Frisbee', division: 'Mixed', round: 'Final',
+    teams: ['med', 'agsoe'], venue: 'soccer-field', start: '2026-10-18T10:00', end: '2026-10-18T11:30',
     note: 'Championship',
-    description: 'Mixed doubles final, best of three sets.' },
-  { id: 'd9-fb-semi', sport: 'Football', division: 'Open', round: 'Semifinal',
-    teams: ['sbm', 'nsg'], venue: 'football-field', start: '2026-10-18T15:00', end: '2026-10-18T16:30',
-    description: 'Football semifinal. Extra time and penalties if level.' },
+    description: 'Mixed ultimate final, first to 15.' },
+  { id: 'd9-sc-semi', sport: 'Soccer', division: 'Open', round: 'Semifinal',
+    teams: ['sbm', 'nsg'], venue: 'soccer-field', start: '2026-10-18T15:00', end: '2026-10-18T16:30',
+    description: 'Soccer semifinal. Extra time and penalties if level.' },
 
   /* ---- Day 10 · Mon, Oct 19 ---- */
-  { id: 'd10-es-final', sport: 'Esports', division: 'Open', round: 'Final',
-    teams: ['ccs', 'eng'], venue: 'sbm-av', start: '2026-10-19T13:00', end: '2026-10-19T17:00',
+  { id: 'd10-sb-w-final', sport: 'Softball', division: 'Women', round: 'Final',
+    teams: ['ccs', 'sbm'], venue: 'soccer-field', start: '2026-10-19T13:00', end: '2026-10-19T15:00',
     note: 'Championship',
-    description: 'Esports final, best of five.' },
+    description: 'Softball final.' },
   { id: 'd10-vb-m-final', sport: 'Volleyball', division: 'Men', round: 'Final',
-    teams: ['eng', 'ccs'], venue: 'loyola-gym', start: '2026-10-19T16:00', end: '2026-10-19T18:00',
+    teams: ['eng', 'ccs'], venue: 'covered-court', start: '2026-10-19T16:00', end: '2026-10-19T18:00',
     note: 'Championship',
     description: 'Men’s volleyball final.' },
 
   /* ---- Day 11 · Tue, Oct 20 ---- */
-  { id: 'd11-fb-final', sport: 'Football', division: 'Open', round: 'Final',
-    teams: ['sbm', 'cas'], venue: 'football-field', start: '2026-10-20T14:00', end: '2026-10-20T15:30',
+  { id: 'd11-sc-final', sport: 'Soccer', division: 'Open', round: 'Final',
+    teams: ['sbm', 'cas'], venue: 'soccer-field', start: '2026-10-20T14:00', end: '2026-10-20T15:30',
     note: 'Championship',
-    description: 'Football final.' },
+    description: 'Soccer final.' },
   { id: 'd11-bb-m-final', sport: 'Basketball', division: 'Men', round: 'Final',
-    teams: ['eng', 'sbm'], venue: 'covered-court', start: '2026-10-20T16:00', end: '2026-10-20T18:00',
+    teams: ['eng', 'sbm'], venue: 'xu-gym', start: '2026-10-20T16:00', end: '2026-10-20T18:00',
     note: 'Championship', featured: true,
     description: 'The men’s basketball final closes the season. The trophy is presented on court straight after.' },
 

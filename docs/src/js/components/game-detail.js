@@ -41,13 +41,14 @@ export function gameDetailHtml(g) {
     </div>`).join('');
 
   /* The venue is shown, not just named: the mini map is the same
-     component as the tab's big one, with this venue selected. */
+     drawing as the tab's big one, with this venue lit and the
+     sport's icon on the spot where it is played. */
   const where = g.venue ? `
     <section class="panel detail__where">
       <div class="panel__kicker">Where it is being played</div>
       <p class="detail__venue-name">${escapeHtml(g.venue.name)}</p>
       ${g.venue.note ? `<p class="detail__venue-note">${escapeHtml(g.venue.note)}</p>` : ''}
-      <div class="detail__map">${cupMapHtml({}, { selected: g.venueId, mini: true })}</div>
+      <div class="detail__map">${cupMapHtml({}, { selected: g.venueId, sport: g.sport })}</div>
       <button class="btn btn--ghost btn--sm detail__venue-cta" type="button" data-show-venue="${escapeAttr(g.venueId)}">
         See everything at this venue
       </button>

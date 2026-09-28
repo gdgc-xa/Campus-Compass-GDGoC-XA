@@ -483,9 +483,7 @@
   animation: livePulse 1.8s ease-in-out infinite;
 }
 
-/* ---------- Map: the selected pin is lime with navy on it ---------- */
-:root[data-skin="txc"] .cup-pin.is-selected .cup-pin__label,
-:root[data-skin="txc"] .cup-pin.is-selected .cup-pin__count { fill: var(--tx-on-accent); }
+/* ---------- Map ---------- */
 :root[data-skin="txc"] .cup-map-panel,
 :root[data-skin="txc"] .venue-panel { border-radius: var(--radius-xl); }
 
