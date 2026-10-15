@@ -17,7 +17,7 @@
    Students' names (team_a_care / team_b_care) are not used.
    ============================================================ */
 
-import { CUP_LIVE, GAMES, SPORTS } from '../data/xavier-cup.js';
+import { CUP_LIVE, GAMES, SPORTS, TRACKER_SPORTS } from '../data/xavier-cup.js';
 import { teamFor } from '../data/teams.js';
 
 const live = {
@@ -113,6 +113,10 @@ function apply(data, kind) {
     ...data.events.map(fromEvent),
   ].filter(g => g.id);
   GAMES.splice(0, GAMES.length, ...games);
+
+  // The sheet's sport list, so every sport has a tile before its first game.
+  const sports = (Array.isArray(data.sports) ? data.sports : []).map(s => sportName(s?.name)).filter(Boolean);
+  TRACKER_SPORTS.splice(0, TRACKER_SPORTS.length, ...sports);
 
   live.loaded = true;
   live.source = kind;

@@ -567,13 +567,18 @@ export const SPORTS = [
 export const VENUE_BY_ID = Object.fromEntries(CUP_MAP.venues.map(v => [v.id, v]));
 export const SPORT_BY_NAME = Object.fromEntries(SPORTS.map(s => [s.name, s]));
 
+/** Every sport the tracker lists (its Lists tab), in its order.
+    Filled by lib/live-data.js, so a sport added to the sheet gets a
+    tile and a page here before its first game. */
+export const TRACKER_SPORTS = [];
+
 /**
- * allSports() — SPORTS in order, then any sport GAMES plays that
- * SPORTS leaves out (with no pictures), so every sport with a game
- * has a page.
+ * allSports() — SPORTS in order, then the tracker's other sports and
+ * any sport GAMES plays that SPORTS leaves out (with no pictures), so
+ * every sport has a page.
  */
 export function allSports() {
-  const extra = sportsInPlay()
+  const extra = [...new Set([...TRACKER_SPORTS, ...sportsInPlay()])]
     .filter(name => !SPORT_BY_NAME[name])
     .map(name => ({
       id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
