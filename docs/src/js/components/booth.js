@@ -104,7 +104,7 @@ export function boothHtml(org) {
           </div>
         </section>
 
-          ${venueMapHtml(org)}
+          ${SHOW_FAIR_MAP ? venueMapHtml(org) : ''}
         </div>
 
         <div class="booth-aside">
