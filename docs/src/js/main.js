@@ -1,18 +1,27 @@
 /* ============================================================
    main.js — entry point.
-   Hydrates the static HTML, initializes the router, wires up
-   the theme toggle, mounts all the ambient/delight modules.
+   Hydrates the static HTML, initializes the router, applies the
+   saved appearance (theme + design skin + motion), and mounts the
+   ambient/delight modules.
    Load with <script type="module" src="…"> in index.html.
    ============================================================ */
 
-import { initRouter }        from './router.js';
-import { initThemeToggle }   from './theme-toggle.js';
-import { watchReveals }      from './reveal-observer.js';
-import { initLanding }       from './screens/landing.js';
-import { initNavSheet }      from './nav-sheet.js';
+import { initRouter }       from './router.js';
+import { initAppearance }   from './appearance.js';
+import { initSettings }     from './settings.js';
+import { watchReveals }     from './reveal-observer.js';
+import { initLanding }      from './screens/landing.js';
+import { initNavSheet }     from './nav-sheet.js';
+import './components/discover-updates.js';
+import './components/discover-games.js';
+import './components/discover-flow.js';
+import './components/discover-teams.js';
+import './components/discover-hero.js';
 
 function boot() {
-  initThemeToggle();
+  // Appearance first: it stamps data-theme / data-skin / data-motion
+  // and swaps the season wording before anything measures the page.
+  initAppearance();
 
   // One-time hydration of the landing screen skeleton
   const landingEl = document.getElementById('screen-landing');
@@ -26,6 +35,9 @@ function boot() {
 
   // Mobile nav sheet (hamburger, <=820px)
   initNavSheet();
+
+  // The gear button and its panel
+  initSettings();
 }
 
 if (document.readyState === 'loading') {
