@@ -121,7 +121,11 @@ function apply(data, kind) {
   live.loaded = true;
   live.source = kind;
   live.stale = Boolean(data.sync?.stale);
-  live.updatedAt = manilaTime(data.sync?.last_checked_at || data.generated_at);
+  // The API says when the sync last ran (Manila time). The data link
+  // reads the sheet itself (cached for at most 30 s), so its data is as
+  // fresh as the moment it answered; its own generated_at is written in
+  // the Apps Script project's time zone, which may not be Manila.
+  live.updatedAt = kind === 'api' ? manilaTime(data.sync?.last_checked_at || data.generated_at) : new Date();
 
   const unplaced = [...new Set(games.filter(g => g.place && !g.venue).map(g => g.place))];
   if (unplaced.length) console.info(`[live-data] venues not on the map yet: ${unplaced.join(', ')}`);

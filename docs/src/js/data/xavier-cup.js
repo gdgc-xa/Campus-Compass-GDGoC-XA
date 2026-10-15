@@ -192,9 +192,9 @@ export const CUP_LIVE = {
   enabled: true,
   api: 'https://campus-api.srv1804367.hstgr.cloud/v1/snapshot',
   devApi: 'http://localhost:3000/v1/snapshot',
-  // TODO: the full api.gs link (https://script.google.com/macros/s/…/exec),
-  // from the database lead. Until it is set there is no fallback.
-  fallback: '',
+  // The api.gs data link (Apps Script web app). It runs on Google with
+  // usage limits, so the site only uses it when the API fails.
+  fallback: 'https://script.google.com/macros/s/AKfycbxGzJP10p0qmt-5kHtzLJ_0IL0MxXPjzlh2jx7dCV3pMFQjh_y4UU2WXhl-rrbwupUg/exec',
   timeoutSeconds: 5,
   refreshSeconds: 45,
 
