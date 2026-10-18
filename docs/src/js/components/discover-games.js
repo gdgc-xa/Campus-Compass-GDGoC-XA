@@ -2,20 +2,24 @@
    components/discover-games.js — the Ongoing Games tile on Discover.
    One chip at a time, scrolls sideways forever (the chips are laid
    out three times and the scroll position jumps by one set at
-   either end). Click a chip -> the shared detail popup, with a
+   either end). Live (or up-next) games come first, then the most recent
+   finished matches with their score.
+   Click a chip -> the shared detail popup, with a
    "See More Matches" button that goes to Matches.
    Put in: docs/src/js/components/discover-games.js
    Load it with one line in main.js:
      import './components/discover-games.js';
    ============================================================ */
-import { GAMES, cupNow } from '../data/xavier-cup.js';
+import { GAMES, CUP_CONFIG, cupNow } from '../data/xavier-cup.js';
 import { resolveGame, sportGlyph } from './game-card.js';
 import { gameDetailHtml } from './game-detail.js';
 import { openDetail, closeDetail } from './detail-modal.js';
 import { escapeHtml, escapeAttr } from '../lib/html.js';
 import { navigate } from '../router.js';
+import { liveStatus } from '../lib/live-data.js';
 
 const MAX = 6;                       // most chips shown
+const MAX_FINISHED = 3;              // of those, the most recent finished matches
 
 const crest = (t) => (t && t.logo
   ? `<img class="dchip__crest" src="${escapeAttr(t.logo)}" alt="" onerror="this.remove()">`
@@ -23,8 +27,13 @@ const crest = (t) => (t && t.logo
 
 function chipHtml(g, clone) {
   const live = g.status === 'ongoing';
-  // Where the score used to be: the status badge ("Live now" / "Up next").
-  const badge = `<span class="dchip__status${live ? ' is-live' : ''}">${live ? 'Live now' : 'Up next'}</span>`;
+  const done = g.status === 'finished';
+  // Where the score used to be: the status badge ("Live now" / "Up next"),
+  // or the final score ("11 – 3") for a match that has finished.
+  const hasScore = done && CUP_CONFIG.showScores !== false && g.score
+    && g.score.home !== undefined && g.score.away !== undefined;
+  const label = live ? 'Live now' : done ? (hasScore ? `${g.score.home} – ${g.score.away}` : 'Final') : 'Up next';
+  const badge = `<span class="dchip__status${live ? ' is-live' : ''}${done ? ' is-final' : ''}">${escapeHtml(String(label))}</span>`;
   const [a, b] = g.sides || [];
   const match = g.sides && g.sides.length >= 2
     ? `<span class="dchip__side">${crest(a)}<span>${escapeHtml(a.short || a.name)}</span></span>
@@ -41,16 +50,23 @@ function chipHtml(g, clone) {
       <span>${escapeHtml(g.dayLabel)}${g.timeLabel ? ` · ${escapeHtml(g.timeLabel)}` : ''}</span>
       ${g.venueName ? `<span>${escapeHtml(g.venueName)}</span>` : ''}
     </span>
-    <span class="dchip__cta">Know More →</span>
+    <span class="dchip__cta">${done ? 'See result →' : 'Know More →'}</span>
   </button>`;
 }
 
 function pick() {
+  // Live data on: the sample fixtures in GAMES are not real. Draw nothing
+  // until the first real answer lands (the tile says "Loading games…").
+  const ls = liveStatus();
+  if (ls.enabled && !ls.loaded) return [];
   const now = cupNow();
   const all = GAMES.map(g => resolveGame(g, now));
   const live = all.filter(g => g.status === 'ongoing').sort((x, y) => x.start - y.start);
   const next = all.filter(g => g.status === 'upcoming').sort((x, y) => x.start - y.start);
-  return (live.length ? live : next).slice(0, MAX);
+  // Finished matches, newest first: shown after the live / up-next ones.
+  const done = all.filter(g => g.status === 'finished').sort((x, y) => y.start - x.start);
+  const front = live.length ? live : next;
+  return [...front.slice(0, MAX - Math.min(MAX_FINISHED, done.length)), ...done.slice(0, MAX_FINISHED)].slice(0, MAX);
 }
 
 function openGame(g) {
@@ -70,6 +86,8 @@ function openGame(g) {
   });
 }
 
+const n0 = (a) => a.length;
+
 function init() {
   const tile = document.querySelector('[data-discover-games]');
   if (!tile || tile.__wired) return;
@@ -85,14 +103,16 @@ function init() {
 
   const paint = () => {
     const next = pick();
-    const s = next.map(g => `${g.id}:${g.status}`).join('|');
+    const ls = liveStatus();
+    const why = !n0(next) && ls.enabled && !ls.loaded ? (ls.failing ? 'down' : 'loading') : '';
+    const s = next.map(g => `${g.id}:${g.status}`).join('|') + '#' + why;
     if (s === sig) return;                       // nothing changed: keep scroll position
     sig = s; games = next; n = games.length; ready = false;
     tile.classList.toggle('is-single', n < 2);
 
     if (!n) {
       track.innerHTML = `<a class="dchip dchip--empty" href="?screen=cup&amp;tab=matches" data-go-tab="matches">
-        <span class="dchip__solo">No games right now</span><span class="dchip__cta">See matches →</span></a>`;
+        <span class="dchip__solo">${why === 'loading' ? 'Loading games…' : why === 'down' ? 'Can’t reach the schedule right now' : 'No games right now'}</span><span class="dchip__cta">See matches →</span></a>`;
       dots.innerHTML = ''; return;
     }
     // One real set, with a copy of it on each side when there is more than one chip.

@@ -474,3 +474,6 @@ button.dtile:focus-visible { outline: 3px solid var(--tx-accent); outline-offset
   .dcup--hero .dcup__btn { min-height: 60px; padding-right: 18px; }
   .dcup--hero .dcup__text strong { font-size: 17px; }
 }
+
+/* A finished match shows its final score where "Live now" would be. */
+.dchip__status.is-final { background: rgba(255, 255, 255, .14); color: inherit; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
