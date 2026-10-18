@@ -31,11 +31,6 @@ const live = {
 let timer = null;
 let lastTry = 0;
 
-/** For views that need to tell "no games" from "not loaded yet / unreachable". */
-export function liveStatus() {
-  return { enabled: Boolean(CUP_LIVE.enabled), loaded: live.loaded, failing: live.failing };
-}
-
 /** Start loading; call once, before the first render. */
 export function startLiveData() {
   if (!CUP_LIVE.enabled) return;
