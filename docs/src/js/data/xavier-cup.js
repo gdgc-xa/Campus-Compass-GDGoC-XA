@@ -67,8 +67,13 @@ export const CUP_CONFIG = {
 
   /* --- Filters on Matches (sports have their own pages on Sports) --- */
   showStatusFilter: true,  // All / Live / Upcoming / Results, on one line
+<<<<<<< HEAD
   showLiveNow: true,       // Matches: the "Live now" row (and the Live filter chip)
   showComingUp: true,      // Matches: the "Coming up" row (and the Upcoming filter chip)
+=======
+  showLiveNow: false,      // Matches: the "Live now" row (and the Live filter chip). OFF for now
+  showComingUp: true,     // Matches: the "Coming up" row (and the Upcoming filter chip). OFF for now
+>>>>>>> 5893e986bdf410872a3e31fb6e0dd22e31a51927
 
   /* --- Discover --- */
   showDiscoverButton: true,                    // the Xavier Cup button at the very top of Discover
