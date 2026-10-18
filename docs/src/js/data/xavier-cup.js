@@ -62,7 +62,7 @@ export const CUP_CONFIG = {
   showBracket: false,      // Sports: each sport's knockout bracket (off: its standings show the groups instead)
   showMap: true,           // the Map view
   showNews: true,          // News & Updates from the Facebook page
-  showEvents: true,        // News & Updates: the Upcoming Events cards under the news (CUP_EVENTS)
+  showEvents: false,       // News & Updates: the Upcoming Events cards under the news (CUP_EVENTS). OFF; set true to bring them back
   showLegend: true,        // the colour key under the map
 
   /* --- Filters on Matches (sports have their own pages on Sports) --- */

@@ -445,3 +445,32 @@ button.dtile:focus-visible { outline: 3px solid var(--tx-accent); outline-offset
 .dcup__text span { font-size: 13.5px; font-weight: 600; opacity: 0.8; }
 .dcup__go { margin-left: auto; font-size: 20px; font-weight: 800; }
 @media (max-width: 480px) { .dcup__text span { flex-basis: 100%; } }
+
+/* The button now sits directly under the hero search box: same width as the
+   search, bigger, with a trophy badge and a soft glow so it reads as the
+   next thing to tap. */
+.dcup--hero { padding: 0; margin-top: 14px; width: 100%; max-width: 560px; }
+.dcup--hero .dcup__inner { width: 100%; }
+.dcup--hero .dcup__btn {
+  min-height: 64px;
+  padding: 10px 22px 10px 12px;
+  gap: 14px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .10), 0 10px 28px rgba(0, 0, 0, .28);
+}
+.dcup--hero .dcup__icon {
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 50%;
+  background: var(--tx-on-accent);
+  color: var(--tx-accent);
+}
+.dcup--hero .dcup__text { flex-direction: column; flex-wrap: nowrap; align-items: flex-start; gap: 2px; }
+.dcup--hero .dcup__text strong { font-size: 18px; line-height: 1.1; }
+.dcup--hero .dcup__text span { flex-basis: auto; font-size: 13.5px; opacity: .85; }
+.dcup--hero .dcup__go { font-size: 24px; transition: transform .15s ease; }
+.dcup--hero .dcup__btn:hover .dcup__go { transform: translateX(4px); }
+@media (max-width: 480px) {
+  .dcup--hero { max-width: none; }
+  .dcup--hero .dcup__btn { min-height: 60px; padding-right: 18px; }
+  .dcup--hero .dcup__text strong { font-size: 17px; }
+}

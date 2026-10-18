@@ -14,6 +14,10 @@
                                     (or one that will not load)
      hideAllReels           true  = leave out every reel
      requirePhoto           true  = leave out every post without a picture
+
+   Always: a post whose text is Facebook's "This content isn't
+   available right now" error page (a deleted, private or
+   restricted post) is left out, so the next post takes its place.
    ============================================================ */
 import { CUP_NEWS } from '../data/xavier-cup.js';
 
@@ -23,6 +27,12 @@ const probed = new Map();   // picture address -> Promise<boolean>
 /** True for a link to a Facebook reel or video. */
 export function isReel(url) {
   return /(?:\/reels?\/|\/videos\/|\/watch\/?(?:[?#]|$)|\bfb\.watch\/)/i.test(String(url ?? ''));
+}
+
+/** Facebook's placeholder text for a post it will not show. */
+const UNAVAILABLE = /this content isn['’‘`]?t available(?: right now)?/i;
+export function isUnavailable(p) {
+  return UNAVAILABLE.test(`${p?.title ?? ''} ${p?.body ?? ''}`);
 }
 
 /** Does this picture actually load? Cached, and never waits long. */
@@ -45,6 +55,7 @@ function pictureLoads(src) {
  */
 export async function displayablePosts(posts) {
   const keep = await Promise.all((posts || []).map(async (p) => {
+    if (isUnavailable(p)) return false;
     p.isReel = isReel(p.link);
     if (CUP_NEWS.requirePhoto && !p.image) return false;
     if (p.isReel) {
