@@ -1,3 +1,4 @@
+import './old-venues-setup.mjs';   // these tests describe the old map; venue-plan.test.mjs covers the new one
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { initialCamera, minScale, MAX_SCALE, constrainCamera, worldAt, zoomAt, pinchCamera, panBy } from '../docs/src/js/lib/cup-map-camera.js';
