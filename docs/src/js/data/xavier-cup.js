@@ -67,7 +67,7 @@ export const CUP_CONFIG = {
 
   /* --- Filters on Matches (sports have their own pages on Sports) --- */
   showStatusFilter: true,  // All / Live / Upcoming / Results, on one line
-  showLiveNow: false,      // Matches: the "Live now" row (and the Live filter chip). OFF for now
+  showLiveNow: true,      // Matches: the "Live now" row (and the Live filter chip). OFF for now
   showComingUp: true,     // Matches: the "Coming up" row (and the Upcoming filter chip). OFF for now
 
   /* --- Discover --- */
